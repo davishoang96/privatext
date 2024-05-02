@@ -1,4 +1,3 @@
-using privatext.Client.Pages;
 using privatext.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +7,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
+app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

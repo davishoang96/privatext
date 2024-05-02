@@ -1,19 +1,25 @@
 ﻿@page "/counter"
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
+@inject HttpClient httpClient;
+@attribute [StreamRendering]
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Ping</PageTitle>
 
-<h1>Counter</h1>
+<h1>Ping</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p role="status">Result: @Result</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
+    private string Result = "Waiting for result.";
 
-    private void IncrementCount()
+    private async void IncrementCount()
     {
-        currentCount++;
+        var res = await httpClient.GetStringAsync("https://localhost:7294/TestConnection/Ping");
+        if(res != null)
+        {
+            Result = res;
+        }
     }
 }
