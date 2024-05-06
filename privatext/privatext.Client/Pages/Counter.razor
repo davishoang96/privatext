@@ -1,25 +1,57 @@
 ﻿@page "/counter"
-@rendermode InteractiveServer
-@inject HttpClient httpClient;
+@attribute [Authorize]
 @attribute [StreamRendering]
+@rendermode InteractiveWebAssembly
+@inject HttpClient httpClient;
 
 <PageTitle>Ping</PageTitle>
 
 <h1>Ping</h1>
 
+<p>Hello @Username!</p>
+
 <p role="status">Result: @Result</p>
+
+<p role="status">Clicked times: @clickedTime</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     private string Result = "Waiting for result.";
+
+    private int clickedTime = 0;
+
+    private string Username = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var state = await authenticationState;
+
+            Username = state?.User?.Identity?.Name ?? string.Empty;
+        }
+    }
 
     private async void IncrementCount()
     {
-        var res = await httpClient.GetStringAsync("https://localhost:7294/TestConnection/Ping");
-        if(res != null)
+        try
         {
-            Result = res;
+            clickedTime++;
+
+            var res = await httpClient.GetFromJsonAsync<int[]>("/InternalData/GetData");
+            if (res != null)
+            {
+                Result = $"This data comes from an internal API: {string.Join(",", res)}";
+            }
+        }
+        catch(Exception ex)
+        {
+            
         }
     }
 }
