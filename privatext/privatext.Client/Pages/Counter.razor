@@ -16,7 +16,7 @@
 
     private async void IncrementCount()
     {
-        var res = await httpClient.GetStringAsync("https://localhost:7294/TestConnection/Ping");
+        var res = await httpClient.GetStringAsync("/TestConnection/Ping");
         if(res != null)
         {
             Result = res;

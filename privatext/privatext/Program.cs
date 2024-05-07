@@ -8,7 +8,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient();
+
+builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri(builder.Configuration["ExternalApiBaseUrl"]));
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+  .CreateClient("ExternalAPI"));
+
 var app = builder.Build();
 
 app.MapControllers();

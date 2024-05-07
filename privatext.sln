@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext", "privatext\privatext\privatext.csproj", "{5E81179A-6A65-4EBB-A38B-102177FEE529}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext", "privatext\privatext\privatext.csproj", "{5E81179A-6A65-4EBB-A38B-102177FEE529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.Client", "privatext\privatext.Client\privatext.Client.csproj", "{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Client", "privatext\privatext.Client\privatext.Client.csproj", "{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.Controllers", "privatext.Controllers\privatext.Controllers.csproj", "{F7B2506E-D5C5-4659-9CF8-FF244E7D5E87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.DTO", "privatext.DTO\privatext.DTO.csproj", "{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7B2506E-D5C5-4659-9CF8-FF244E7D5E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7B2506E-D5C5-4659-9CF8-FF244E7D5E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7B2506E-D5C5-4659-9CF8-FF244E7D5E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7B2506E-D5C5-4659-9CF8-FF244E7D5E87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

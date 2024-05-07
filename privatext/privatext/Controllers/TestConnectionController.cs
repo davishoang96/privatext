@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 namespace privatext;
 
-[ApiController]
-[Route("[controller]")]
 public class TestConnectionController : ControllerBase
 {
     [HttpGet("Ping")]
