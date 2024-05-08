@@ -43,7 +43,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var res = await httpClient.GetFromJsonAsync<IEnumerable<WeatherDTO>>("/Weather/GetWeatherData");
+        var res = await httpClient.GetFromJsonAsync<IEnumerable<WeatherDTO>>("api/GetWeatherData");
         if (res != null)
         {
             forecasts = res;

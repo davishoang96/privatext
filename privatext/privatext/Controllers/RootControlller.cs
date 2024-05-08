@@ -3,7 +3,7 @@
 namespace privatext.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("/api")]
 public class RootControlller : ControllerBase
 {
 }

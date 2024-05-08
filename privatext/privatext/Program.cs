@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddControllers();
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri(builder.Configuration["ExternalApiBaseUrl"]));
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
   .CreateClient("ExternalAPI"));
@@ -16,6 +16,8 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 var app = builder.Build();
 
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
