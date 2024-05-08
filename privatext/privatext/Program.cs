@@ -1,6 +1,10 @@
 using privatext.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseKestrel(o => o.ListenLocalhost(int.Parse(builder.Configuration["PortNumber"]), builder =>
+{
+    builder.UseHttps();
+}));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -9,7 +13,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri(builder.Configuration["ExternalApiBaseUrl"]));
+builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri($"https://localhost:{builder.Configuration["PortNumber"]}"));
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
   .CreateClient("ExternalAPI"));
 
