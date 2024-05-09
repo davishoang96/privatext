@@ -13,7 +13,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri("https://privatext.azurewebsites.net/"));
+builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri(builder.Configuration["BaseUrl"]));
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
   .CreateClient("ExternalAPI"));
 
