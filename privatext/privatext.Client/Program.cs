@@ -6,6 +6,4 @@ builder.Services.AddHttpClient("ServerAPI", client => client.BaseAddress = new U
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
   .CreateClient("ServerAPI"));
 
-
-
 await builder.Build().RunAsync();
