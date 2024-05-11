@@ -1,0 +1,28 @@
+name: PRV.privatext
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+          include-prerelease: true
+
+      - name: dotnet build
+        run: dotnet build --configuration Release
+
+      # - name: dotnet test
+      #   run: dotnet test --verbosity normal
