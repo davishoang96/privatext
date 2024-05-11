@@ -1,7 +1,7 @@
 ﻿@page "/weather"
-@using privatext.DTO
+@inject IApiClient ApiClient
+@using privatext.Client.HttpClient
 @attribute [StreamRendering]
-@inject HttpClient httpClient;
 
 <PageTitle>Weather</PageTitle>
 
@@ -28,7 +28,7 @@ else
             @foreach (var forecast in forecasts)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.Date.DateTime.ToShortDateString()</td>
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
@@ -43,7 +43,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var res = await httpClient.GetFromJsonAsync<IEnumerable<WeatherDTO>>("forecasts/1000");
+        var res = await ApiClient.WeatherEndpointAsync(1000);
+
         if (res != null)
         {
             forecasts = res;

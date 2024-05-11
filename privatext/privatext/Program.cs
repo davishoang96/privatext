@@ -1,17 +1,26 @@
 using FastEndpoints;
+using FastEndpoints.ClientGen;
+using FastEndpoints.Swagger;
+using NJsonSchema.CodeGeneration.CSharp;
+using privatext.Client.HttpClient;
 using privatext.Components;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddFastEndpoints();
+builder.Services.AddFastEndpoints().SwaggerDocument(o =>
+{
+    o.ShortSchemaNames = true; // prevent adding namespace as prefix to classes.
+    o.DocumentSettings = s => s.DocumentName = "MyAPI"; //must match doc name below
+});
+builder.Services.AddEndpointsApiExplorer();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.Services.AddHttpClient("ExternalAPI", client => client.BaseAddress = new Uri(builder.Configuration["BaseUrl"]));
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-  .CreateClient("ExternalAPI"));
+builder.Services.AddScoped<IApiClient>(sp =>
+       new ApiClient(builder.Configuration["BaseUrl"],
+       new HttpClient { BaseAddress = new Uri(builder.Configuration["BaseUrl"]) }));
 
 var app = builder.Build();
 
@@ -28,19 +37,30 @@ else
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseAntiforgery();
-
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(privatext.Client._Imports).Assembly);
+   .AddInteractiveServerRenderMode()
+   .AddInteractiveWebAssemblyRenderMode()
+   .AddAdditionalAssemblies(typeof(privatext.Client._Imports).Assembly);
 
 app.UseFastEndpoints(c =>
 {
     c.Endpoints.ShortNames = true;
     c.Serializer.Options.PropertyNamingPolicy = null;
-});
+}).UseSwaggerGen();
+
+await app.GenerateClientsAndExitAsync(
+    documentName: "MyAPI",
+    destinationPath: "../privatext.Client/HttpClient",
+    csSettings: c =>
+    {
+        c.ClassName = "ApiClient";
+        c.InjectHttpClient = true;
+        c.GenerateClientInterfaces = true;
+        c.CSharpGeneratorSettings.Namespace = "privatext.Client.HttpClient";
+        c.CSharpGeneratorSettings.JsonLibrary = CSharpJsonLibrary.NewtonsoftJson;
+    },
+    tsSettings: null);
 
 app.Run();

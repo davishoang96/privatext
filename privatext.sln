@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext", "privatext\priv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Client", "privatext\privatext.Client\privatext.Client.csproj", "{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.DTO", "privatext.DTO\privatext.DTO.csproj", "{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.Common", "privatext.Common\privatext.Common.csproj", "{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF9DE30A-8EB3-4215-BE24-0BA871D428E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
