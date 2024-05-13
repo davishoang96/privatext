@@ -1,0 +1,44 @@
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using privatext.Database;
+
+namespace privatext.Test;
+
+public class BaseDataContextTest : IDisposable
+{
+    internal SqliteConnection _connection;
+    internal DbContextOptions<DatabaseContext> _dbContextOptions;
+
+    public BaseDataContextTest()
+    {
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+        using (var context = new DatabaseContext(_connection))
+        {
+            context.Database.EnsureCreated();
+        }
+    }
+
+    #region IDisposable Support
+    private bool disposedValue = false;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                _connection.Close();
+                _connection.Dispose();
+            }
+
+            disposedValue = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+    #endregion
+}
