@@ -1,8 +1,9 @@
 using AutoFixture;
+using FluentAssertions;
 using privatext.Database;
 using privatext.Database.Models;
 
-namespace privatext.Test;
+namespace privatext.DatabaseTest;
 
 public class RepoTest : BaseDataContextTest
 {
@@ -25,7 +26,7 @@ public class RepoTest : BaseDataContextTest
         // Assert
         using (var context = new DatabaseContext(_connection))
         {
-            Assert.True(context.Messages.Count() == 50);
+            context.Messages.Count().Should().Be(50);
         }
     }
 }

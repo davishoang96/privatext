@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using privatext.Database;
 
-namespace privatext.Test;
+namespace privatext.DatabaseTest;
 
 public class BaseDataContextTest : IDisposable
 {
