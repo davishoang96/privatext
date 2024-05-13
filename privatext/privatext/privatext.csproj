@@ -8,12 +8,16 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\privatext.Common\privatext.Common.csproj" />
+		<ProjectReference Include="..\..\privatext.Database\privatext.Database.csproj" />
 		<ProjectReference Include="..\privatext.Client\privatext.Client.csproj" />
 		<PackageReference Include="FastEndpoints" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.Attributes" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.ClientGen" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.Swagger" Version="5.25.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
+		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.8" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />

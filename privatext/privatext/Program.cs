@@ -1,11 +1,15 @@
 using FastEndpoints;
 using FastEndpoints.ClientGen;
 using FastEndpoints.Swagger;
+using Microsoft.EntityFrameworkCore;
 using NJsonSchema.CodeGeneration.CSharp;
 using privatext.Client.HttpClient;
 using privatext.Components;
+using privatext.Database;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<DatabaseContext>();
 builder.Services.AddFastEndpoints().SwaggerDocument(o =>
 {
     o.ShortSchemaNames = true; // prevent adding namespace as prefix to classes.
@@ -24,6 +28,12 @@ builder.Services.AddScoped<IApiClient>(sp =>
 
 var app = builder.Build();
 
+// Apply migration
+using (var scope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<DatabaseContext>().Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,7 +45,6 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
