@@ -6,6 +6,7 @@ using NJsonSchema.CodeGeneration.CSharp;
 using privatext.Client.HttpClient;
 using privatext.Components;
 using privatext.Database;
+using privatext.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddFastEndpoints().SwaggerDocument(o =>
     o.DocumentSettings = s => s.DocumentName = "MyAPI"; //must match doc name below
 });
 builder.Services.AddEndpointsApiExplorer();
+
+// Services
+builder.Services.AddTransient<MessageService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

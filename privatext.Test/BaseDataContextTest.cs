@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using privatext.Database;
 
 namespace privatext.DatabaseTest;
@@ -7,7 +6,6 @@ namespace privatext.DatabaseTest;
 public class BaseDataContextTest : IDisposable
 {
     internal SqliteConnection _connection;
-    internal DbContextOptions<DatabaseContext> _dbContextOptions;
 
     public BaseDataContextTest()
     {
