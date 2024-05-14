@@ -1,0 +1,15 @@
+﻿@page "/"
+<PageTitle>Home</PageTitle>
+
+<h1>@message</h1>
+
+<RadzenButton Click="@ButtonClicked" Text="Click me"></RadzenButton>
+
+@code {
+    private string message = "Welcome";
+
+    void ButtonClicked()
+    {
+        message = "Hi there";
+    }
+}

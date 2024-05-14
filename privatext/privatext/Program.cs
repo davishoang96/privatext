@@ -7,6 +7,7 @@ using privatext.Client.HttpClient;
 using privatext.Components;
 using privatext.Database;
 using privatext.Services;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient<MessageService>();
 
 // Add services to the container.
+builder.Services.AddRadzenComponents();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
