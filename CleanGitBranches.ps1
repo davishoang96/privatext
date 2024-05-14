@@ -1,1 +1,0 @@
-git branch | Where-Object { $_ -notmatch 'master|auth0' } | ForEach-Object { git branch -D $_.replace(' ', '') }
