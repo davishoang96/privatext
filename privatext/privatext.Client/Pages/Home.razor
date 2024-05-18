@@ -1,15 +1,30 @@
 ﻿@page "/"
-<PageTitle>Home</PageTitle>
+@using privatext.Client.HttpClient
+@inject ApiClient client;
 
-<h1>@message</h1>
+<PageTitle>Privatext</PageTitle>
 
-<RadzenButton Click="@ButtonClicked" Text="Click me"></RadzenButton>
+<RadzenRow class="rz-text-align-center" Gap="1rem">
+    <RadzenColumn Size="3"/>
+    <RadzenColumn Size="6">
+        <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+            <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
+                <h4>New text</h4>
+            </RadzenStack>
+            <RadzenTextArea Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenButton Click="@ButtonClicked" Text="Create" />
+                <RadzenButton Click="@ButtonClicked" Text="Options" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenColumn>
+    <RadzenColumn Size="3" />
+</RadzenRow>
+
+
 
 @code {
-    private string message = "Welcome";
-
     void ButtonClicked()
     {
-        message = "Hi there";
     }
 }
