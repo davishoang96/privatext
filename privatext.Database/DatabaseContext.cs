@@ -34,9 +34,9 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Message>()
-            .HasKey(s => s.Id);
+            .HasKey(s => s.MessageId);
         modelBuilder.Entity<Message>()
-            .HasIndex(s => s.Id);
+            .HasIndex(s => s.MessageId);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

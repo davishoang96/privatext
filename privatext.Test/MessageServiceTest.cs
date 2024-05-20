@@ -25,7 +25,7 @@ public class MessageServiceTest : BaseDataContextTest
         {
             var model = new Message
             {
-                Id = 1,
+                MessageId = "asdofij!@#",
                 Content = "#fgaje;jf'pvcxi123",
                 DateCreated = dateCreated,
             };
@@ -35,7 +35,7 @@ public class MessageServiceTest : BaseDataContextTest
         }
 
         // Act
-        var result = messageService.GetMessage(1);
+        var result = messageService.GetMessage("asdofij!@#");
 
         // Assert
         result.Content.Should().Be(content);
@@ -50,8 +50,9 @@ public class MessageServiceTest : BaseDataContextTest
         {
             var model = new Message
             {
-                Id = 1,
+                MessageId = "asdofij!@#",
                 Content = "#fgaje;jf'pvcxi123",
+                DateCreated = DateTime.Now,
             };
 
             await context.AddAsync(model);
@@ -59,7 +60,7 @@ public class MessageServiceTest : BaseDataContextTest
         }
 
         // Act
-        await messageService.DeleteMessage(1);
+        await messageService.DeleteMessage("asdofij!@#");
 
         // Assert
         using (var context = new DatabaseContext(_connection))
@@ -75,7 +76,9 @@ public class MessageServiceTest : BaseDataContextTest
         var content = "qjg;p8943j";
         var dto = new MessageDTO
         {
+            MessageId = "12512wd",
             Content = content,
+            DateCreated = DateTime.Now,
         };
 
         // Act

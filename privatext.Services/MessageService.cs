@@ -21,6 +21,7 @@ public class MessageService : IMessageService
 
         await db.Messages.AddAsync(new Message
         {
+            MessageId = messageDTO.MessageId,
             Content = messageDTO.Content,
             DateCreated = DateTime.Now,
         });
@@ -30,14 +31,14 @@ public class MessageService : IMessageService
         return true;
     }
 
-    public async Task<bool> DeleteMessage(int messageId)
+    public async Task<bool> DeleteMessage(string messageId)
     {
-        if (messageId == 0)
+        if (string.IsNullOrEmpty(messageId))
         {
             return false;
         }
 
-        var message = db.Messages.SingleOrDefault(s => s.Id == messageId);
+        var message = db.Messages.SingleOrDefault(s => s.MessageId == messageId);
         if (message == null)
         {
             return false;
@@ -49,14 +50,14 @@ public class MessageService : IMessageService
         return true;
     }
 
-    public MessageDTO GetMessage(int messageId)
+    public MessageDTO GetMessage(string messageId)
     {
-        if (messageId == 0)
+        if (string.IsNullOrEmpty(messageId))
         {
             return null;
         }
 
-        var message = db.Messages.SingleOrDefault(s => s.Id == messageId);
+        var message = db.Messages.SingleOrDefault(s => s.MessageId == messageId);
         if (message == null)
         {
             return null;
@@ -64,7 +65,7 @@ public class MessageService : IMessageService
 
         return new MessageDTO
         {
-            Id = message.Id,
+            MessageId = message.MessageId,
             Content = message.Content,
             DateCreated = message.DateCreated,
         };
