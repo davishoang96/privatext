@@ -20,7 +20,8 @@ builder.Services.AddFastEndpoints().SwaggerDocument(o =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Services
-builder.Services.AddTransient<MessageService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddSingleton<IRandomString, RandomString>();
 
 // Add services to the container.
 builder.Services.AddRadzenComponents();

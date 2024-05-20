@@ -1,6 +1,10 @@
 ﻿@page "/"
 @inject IApiClient ApiClient
+@inject IRandomString randomString
+@using System.Security.Cryptography
+@using System.Text
 @using privatext.Client.HttpClient
+@using privatext.Services
 
 <PageTitle>Privatext</PageTitle>
 
@@ -11,7 +15,7 @@
             <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
                 <h4>New text</h4>
             </RadzenStack>
-            <RadzenTextArea Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
+            <RadzenTextArea @bind-Value="@MessageContent" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
             <RadzenStack Orientation="Orientation.Horizontal">
                 <RadzenButton Click="@ButtonClicked" Text="Create" />
                 <RadzenButton Click="@ButtonClicked" Text="Options" />
@@ -21,11 +25,18 @@
     <RadzenColumn Size="3" />
 </RadzenRow>
 
-
-
 @code {
-    void ButtonClicked()
-    {
 
+    private string MessageContent { get; set; }
+
+    private async Task ButtonClicked()
+    {
+        var id = randomString.CreateRandomString(32);
+        var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest{
+            MessageDTO = new MessageDTO{
+                MessageId = id,
+                Content = MessageContent,
+            },
+        });
     }
 }
