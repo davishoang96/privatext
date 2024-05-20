@@ -4,7 +4,7 @@ namespace privatext.Services;
 
 public interface IMessageService
 {
-    MessageDTO GetMessage(int messageId);
-    Task<bool> DeleteMessage(int messageId);
+    MessageDTO GetMessage(string messageId);
+    Task<bool> DeleteMessage(string messageId);
     Task<bool> CreateMessage(MessageDTO messageDTO);
 }

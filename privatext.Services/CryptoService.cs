@@ -21,14 +21,10 @@ public class CryptoService : ICryptoService
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                 using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(secret)))
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                 {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                        {
-                            return srDecrypt.ReadToEnd();
-                        }
-                    }
+                    return srDecrypt.ReadToEnd();
                 }
             }
         });
@@ -49,11 +45,9 @@ public class CryptoService : ICryptoService
                 using (MemoryStream msEncrypt = new MemoryStream())
                 {
                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                        {
-                            swEncrypt.Write(text);
-                        }
+                        swEncrypt.Write(text);
                     }
                     return Convert.ToBase64String(msEncrypt.ToArray());
                 }

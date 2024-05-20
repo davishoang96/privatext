@@ -12,9 +12,9 @@ public class RepoTest : BaseDataContextTest
     {
         // Arrange
         var fixture = new Fixture();
-        var postId = 1;
+        var id = 1;
         var messages = fixture.Build<Message>()
-            .With(s => s.Id, () => postId++).CreateMany(50);
+            .With(s => s.MessageId, () => $"fjoa36@12(*(#)){id++}").CreateMany(50);
 
         // Act
         using (var context = new DatabaseContext(_connection))
