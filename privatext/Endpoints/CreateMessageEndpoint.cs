@@ -1,15 +1,17 @@
 using FastEndpoints;
-using privatext.Common.Request;
+using privatext.Client.HttpClient;
 using privatext.Services;
 
 namespace privatext.Endpoints;
 
-public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, CreateMessageResponse>
+public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
 {
+    private readonly ICryptoService cryptoService;
     private readonly IMessageService messageService;
-    public CreateMessageEndpoint(IMessageService messageService)
+    public CreateMessageEndpoint(IMessageService messageService, ICryptoService cryptoService)
     {
         this.messageService = messageService;
+        this.cryptoService = cryptoService;
     }
 
     public override void Configure()
@@ -20,12 +22,19 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, CreateMessag
 
     public override async Task HandleAsync(CreateMessageRequest r, CancellationToken c)
     {
-        if(await messageService.CreateMessage(r.MessageDTO))
+        var messageContent = await cryptoService.Encrypt(r.MessageDTO.Content, r.MessageDTO.MessageId);
+        var messageId = r.MessageDTO.MessageId;
+        var midpoint = messageId.Length / 2;
+        var secondHalf = messageId.Substring(midpoint);
+        var encMessageDTO = new Common.DTO.MessageDTO
         {
-            await SendAsync(new CreateMessageResponse
-            {
-                MessageId = r.MessageDTO.MessageId,
-            });
+            MessageId = secondHalf,
+            Content = messageContent,
+        };
+
+        if (await messageService.CreateMessage(encMessageDTO))
+        {
+            await SendAsync(true);
         }
     }
 }

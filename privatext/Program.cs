@@ -22,6 +22,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Services
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSingleton<IRandomString, RandomString>();
+builder.Services.AddSingleton<ICryptoService, CryptoService>();
 
 // Add services to the container.
 builder.Services.AddRadzenComponents();

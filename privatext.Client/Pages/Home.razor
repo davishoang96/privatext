@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IApiClient ApiClient
 @inject IRandomString randomString
+@inject NotificationService NotificationService
 @using System.Security.Cryptography
 @using System.Text
 @using privatext.Client.HttpClient
@@ -11,14 +12,35 @@
 <RadzenRow class="rz-text-align-center" Gap="1rem">
     <RadzenColumn Size="3"/>
     <RadzenColumn Size="6">
-        <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+        <RadzenStack Visible="@ShowMessageInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
             <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
                 <h4>New text</h4>
             </RadzenStack>
             <RadzenTextArea @bind-Value="@MessageContent" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
             <RadzenStack Orientation="Orientation.Horizontal">
-                <RadzenButton Click="@ButtonClicked" Text="Create" />
-                <RadzenButton Click="@ButtonClicked" Text="Options" />
+                <RadzenButton Click="@CreateMessage" Text="Create" />
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenStack Visible="@ShowLink" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+            <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Vertical">
+                <h4>Created!!!</h4>
+                <RadzenStack Orientation="Orientation.Vertical">
+                    <RadzenFormField Text="Link">
+                        <Start>
+                            <RadzenIcon Icon="http" />
+                        </Start>
+                        <ChildContent>
+                            <RadzenTextBox @bind-Value="@MessageId" />
+                        </ChildContent>
+                        <End>
+                            <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
+                        </End>
+                    </RadzenFormField>
+                    <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
+                        <RadzenButton>Copy link</RadzenButton>
+                        <RadzenButton Click="@NewText" >New Text</RadzenButton>
+                    </RadzenStack>
+                </RadzenStack>
             </RadzenStack>
         </RadzenStack>
     </RadzenColumn>
@@ -28,15 +50,53 @@
 @code {
 
     private string MessageContent { get; set; }
+    private bool ShowMessageInput { get; set; }
+    private bool ShowLink { get; set; }
+    private string MessageId { get; set; }
 
-    private async Task ButtonClicked()
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+
+        ShowMessageInput = !ShowLink;
+    }
+
+    private async Task CreateMessage()
+    {
+        if(string.IsNullOrEmpty(MessageContent))
+        {
+            NotificationService.Notify(new NotificationMessage 
+            { 
+                Severity = NotificationSeverity.Error, 
+                Summary = "Warning", 
+                Detail = "Message cannot be empty",
+            });
+
+            return;
+        }
+
         var id = randomString.CreateRandomString(32);
-        var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest{
-            MessageDTO = new MessageDTO{
+        var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
+        {
+            MessageDTO = new MessageDTO
+            {
                 MessageId = id,
                 Content = MessageContent,
             },
         });
+
+        if(result)
+        {
+            MessageId = id;
+            ShowLink = true;
+            ShowMessageInput = false;
+        }
+    }
+
+    private void NewText()
+    {
+        MessageContent = MessageId = string.Empty;
+        ShowMessageInput = true;
+        ShowLink = false;
     }
 }
