@@ -5,10 +5,10 @@ on:
     - main
 env:
   AZURE_WEBAPP_NAME: privatext
-  AZURE_WEBAPP_PACKAGE_PATH: privatext/privatext/published
+  AZURE_WEBAPP_PACKAGE_PATH: privatext/published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
-  WORKING_DIRECTORY: privatext/privatext
+  WORKING_DIRECTORY: privatext
 jobs:
   build:
     runs-on: ubuntu-latest
