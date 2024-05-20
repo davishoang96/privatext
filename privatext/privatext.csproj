@@ -5,7 +5,6 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="FastEndpoints" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.Attributes" Version="5.25.0" />
