@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using privatext.Client.HttpClient;
+using privatext.Services;
 using Radzen;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.Services.AddSingleton<IRandomString, RandomString>();
 
 builder.Services.AddScoped<IApiClient>(sp =>
         new ApiClient(builder.Configuration["BaseUrl"],
