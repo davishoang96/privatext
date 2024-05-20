@@ -5,10 +5,7 @@ namespace privatext.Services;
 
 public class CryptoService : ICryptoService
 {
-    // NOTE: This is for testing. Better find some where else to store it.
-    private string key = "!F78bQ6z@w$P2Z^4fB^bK!Pkc3@2XU7*";
-
-    public Task<string> Decrypt(string secret)
+    public Task<string> Decrypt(string secret, string key)
     {
         return Task.Run(() =>
         {
@@ -30,7 +27,7 @@ public class CryptoService : ICryptoService
         });
     }
 
-    public Task<string> Encrypt(string text)
+    public Task<string> Encrypt(string text, string key)
     {
         return Task.Run(() =>
         {
