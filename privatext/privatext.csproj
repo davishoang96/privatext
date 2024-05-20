@@ -5,12 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\..\privatext.Common\privatext.Common.csproj" />
-		<ProjectReference Include="..\..\privatext.Database\privatext.Database.csproj" />
-		<ProjectReference Include="..\..\privatext.Services\privatext.Services.csproj" />
-		<ProjectReference Include="..\privatext.Client\privatext.Client.csproj" />
 		<PackageReference Include="FastEndpoints" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.Attributes" Version="5.25.0" />
 		<PackageReference Include="FastEndpoints.ClientGen" Version="5.25.0" />
@@ -26,5 +21,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\privatext.Client\privatext.Client.csproj" />
+		<ProjectReference Include="..\privatext.Common\privatext.Common.csproj" />
+		<ProjectReference Include="..\privatext.Database\privatext.Database.csproj" />
+		<ProjectReference Include="..\privatext.Services\privatext.Services.csproj" />
 	</ItemGroup>
 </Project>

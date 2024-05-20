@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext", "privatext\privatext\privatext.csproj", "{5E81179A-6A65-4EBB-A38B-102177FEE529}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Client", "privatext\privatext.Client\privatext.Client.csproj", "{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Common", "privatext.Common\privatext.Common.csproj", "{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Database", "privatext.Database\privatext.Database.csproj", "{A04A9AF2-2369-4C33-9E12-B468DE715D73}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Test", "privatext.Test\privatext.Test.csproj", "{3CCF5F5F-8706-4D59-BADE-0C5863AE30DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privatext.Services", "privatext.Services\privatext.Services.csproj", "{D5682397-BD85-4521-8566-9BC2CF38452A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Services", "privatext.Services\privatext.Services.csproj", "{D5682397-BD85-4521-8566-9BC2CF38452A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext", "privatext\privatext.csproj", "{52CFB0CF-05F9-4E27-BDAC-DC5B898ED7D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "privatext.Client", "privatext.Client\privatext.Client.csproj", "{C49A377D-837E-43B6-A709-DDF4F00FF406}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5E81179A-6A65-4EBB-A38B-102177FEE529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E81179A-6A65-4EBB-A38B-102177FEE529}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E81179A-6A65-4EBB-A38B-102177FEE529}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E81179A-6A65-4EBB-A38B-102177FEE529}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F05483E9-EDC5-4C98-81F6-962EB3DB3FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64BAE5D2-78BF-46F9-81D8-7916AEC1A7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +37,14 @@ Global
 		{D5682397-BD85-4521-8566-9BC2CF38452A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5682397-BD85-4521-8566-9BC2CF38452A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5682397-BD85-4521-8566-9BC2CF38452A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CFB0CF-05F9-4E27-BDAC-DC5B898ED7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CFB0CF-05F9-4E27-BDAC-DC5B898ED7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CFB0CF-05F9-4E27-BDAC-DC5B898ED7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CFB0CF-05F9-4E27-BDAC-DC5B898ED7D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C49A377D-837E-43B6-A709-DDF4F00FF406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49A377D-837E-43B6-A709-DDF4F00FF406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C49A377D-837E-43B6-A709-DDF4F00FF406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C49A377D-837E-43B6-A709-DDF4F00FF406}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
