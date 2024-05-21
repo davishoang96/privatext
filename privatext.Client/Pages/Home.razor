@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IApiClient ApiClient
-@inject IRandomString randomString
+@inject IRandomString RandomString
+@inject NavigationManager NavigationManager
 @inject NotificationService NotificationService
 @using System.Security.Cryptography
 @using System.Text
@@ -9,28 +10,27 @@
 
 <PageTitle>Privatext</PageTitle>
 
-<RadzenRow class="rz-text-align-center" Gap="1rem">
+<RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
     <RadzenColumn Size="3"/>
     <RadzenColumn Size="6">
         <RadzenStack Visible="@ShowMessageInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
             <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
-                <h4>New text</h4>
+                <h4>Create your private text</h4>
             </RadzenStack>
             <RadzenTextArea @bind-Value="@MessageContent" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
             <RadzenStack Orientation="Orientation.Horizontal">
-                <RadzenButton Click="@CreateMessage" Text="Create" />
+                <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
             </RadzenStack>
         </RadzenStack>
         <RadzenStack Visible="@ShowLink" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
             <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Vertical">
-                <h4>Created!!!</h4>
                 <RadzenStack Orientation="Orientation.Vertical">
                     <RadzenFormField Text="Link">
                         <Start>
                             <RadzenIcon Icon="http" />
                         </Start>
                         <ChildContent>
-                            <RadzenTextBox @bind-Value="@MessageId" />
+                            <RadzenTextBox @bind-Value="@MessageUrl" />
                         </ChildContent>
                         <End>
                             <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
@@ -38,7 +38,7 @@
                     </RadzenFormField>
                     <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
                         <RadzenButton>Copy link</RadzenButton>
-                        <RadzenButton Click="@NewText" >New Text</RadzenButton>
+                        <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">New Text</RadzenButton>
                     </RadzenStack>
                 </RadzenStack>
             </RadzenStack>
@@ -50,6 +50,7 @@
 @code {
 
     private string MessageContent { get; set; }
+    private string MessageUrl { get; set; }
     private bool ShowMessageInput { get; set; }
     private bool ShowLink { get; set; }
     private string MessageId { get; set; }
@@ -57,7 +58,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
         ShowMessageInput = !ShowLink;
     }
 
@@ -75,7 +75,7 @@
             return;
         }
 
-        var id = randomString.CreateRandomString(32);
+        var id = RandomString.CreateRandomString(32);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
             MessageDTO = new MessageDTO
@@ -88,14 +88,22 @@
         if(result)
         {
             MessageId = id;
+            MessageUrl = $"{NavigationManager.BaseUri}message/{id}";
             ShowLink = true;
             ShowMessageInput = false;
+
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Status",
+                Detail = "Private text successfully created",
+            });
         }
     }
 
     private void NewText()
     {
-        MessageContent = MessageId = string.Empty;
+        MessageContent = MessageUrl = MessageId = string.Empty;
         ShowMessageInput = true;
         ShowLink = false;
     }
