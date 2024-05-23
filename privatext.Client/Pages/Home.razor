@@ -13,11 +13,11 @@
 <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
     <RadzenColumn Size="3"/>
     <RadzenColumn Size="6">
-        <RadzenStack Visible="@ShowMessageInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+        <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
             <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
                 <h4>Create your private text</h4>
             </RadzenStack>
-            <RadzenTextArea @bind-Value="@MessageContent" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
+            <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
             <RadzenStack Orientation="Orientation.Horizontal">
                 <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
             </RadzenStack>
@@ -30,7 +30,7 @@
                             <RadzenIcon Icon="http" />
                         </Start>
                         <ChildContent>
-                            <RadzenTextBox @bind-Value="@MessageUrl" />
+                            <RadzenTextBox @bind-Value="@TextUrl" />
                         </ChildContent>
                         <End>
                             <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
@@ -49,21 +49,21 @@
 
 @code {
 
-    private string MessageContent { get; set; }
-    private string MessageUrl { get; set; }
-    private bool ShowMessageInput { get; set; }
+    private string Content { get; set; }
+    private string TextUrl { get; set; }
+    private bool ShowTextInput { get; set; }
     private bool ShowLink { get; set; }
-    private string MessageId { get; set; }
+    private string TextId { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        ShowMessageInput = !ShowLink;
+        ShowTextInput = !ShowLink;
     }
 
     private async Task CreateMessage()
     {
-        if(string.IsNullOrEmpty(MessageContent))
+        if(string.IsNullOrEmpty(Content))
         {
             NotificationService.Notify(new NotificationMessage 
             { 
@@ -75,22 +75,22 @@
             return;
         }
 
-        var id = RandomString.CreateRandomString(32);
+        var id = RandomString.Generate(32);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
             MessageDTO = new MessageDTO
             {
                 MessageId = id,
-                Content = MessageContent,
+                Content = Content,
             },
         });
 
         if(result)
         {
-            MessageId = id;
-            MessageUrl = $"{NavigationManager.BaseUri}message/{id}";
+            TextId = id;
+            TextUrl = $"{NavigationManager.BaseUri}text/{id}";
             ShowLink = true;
-            ShowMessageInput = false;
+            ShowTextInput = false;
 
             NotificationService.Notify(new NotificationMessage
             {
@@ -103,8 +103,8 @@
 
     private void NewText()
     {
-        MessageContent = MessageUrl = MessageId = string.Empty;
-        ShowMessageInput = true;
+        Content = TextUrl = TextId = string.Empty;
+        ShowTextInput = true;
         ShowLink = false;
     }
 }
