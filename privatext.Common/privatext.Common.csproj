@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Response\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FastEndpoints.Attributes" Version="5.25.0" />
   </ItemGroup>
 
