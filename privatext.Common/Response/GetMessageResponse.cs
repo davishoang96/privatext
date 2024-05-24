@@ -2,7 +2,7 @@
 
 namespace privatext.Common.Response
 {
-    public class GetMessageResponse
+    public class GetMessageResponse : BaseEndpointResponse
     {
         public MessageDTO MessageDTO { get; set; }
     }

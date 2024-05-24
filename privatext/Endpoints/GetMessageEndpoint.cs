@@ -23,7 +23,23 @@ namespace privatext.Endpoints
 
         public override async Task HandleAsync(GetMessageRequest r, CancellationToken c)
         {
+            var res = new GetMessageResponse();
+            var model = messageService.GetMessage(r.MessageId);
+            if (model == null)
+            {
+                res.AddError("Message has been deleted");
+                await SendAsync(res);
+            }
 
+            var decryptedMessage = await cryptoService.Decrypt(model.Content, r.MessageId);
+            await SendAsync(new GetMessageResponse
+            {
+                MessageDTO = new Common.DTO.MessageDTO
+                {
+                    Content = decryptedMessage,
+                    DateCreated = model.DateCreated,
+                }
+            });
         }
     }
 }
