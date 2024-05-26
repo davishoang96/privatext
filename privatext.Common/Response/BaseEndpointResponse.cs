@@ -6,7 +6,7 @@ public class BaseEndpointResponse
 
     public IList<string> Errors => errors;
 
-    public bool Success => Errors != null;
+    public bool Success => !Errors.Any();
 
     public void AddError(string errorMessage)
     {

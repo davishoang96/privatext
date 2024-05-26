@@ -34,12 +34,12 @@ namespace privatext.Client.HttpClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(GetMessageRequest getMessageRequest);
+        System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(string messageId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(GetMessageRequest getMessageRequest, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(string messageId, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -182,18 +182,18 @@ namespace privatext.Client.HttpClient
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(GetMessageRequest getMessageRequest)
+        public virtual System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(string messageId)
         {
-            return GetMessageEndpointAsync(getMessageRequest, System.Threading.CancellationToken.None);
+            return GetMessageEndpointAsync(messageId, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(GetMessageRequest getMessageRequest, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<GetMessageResponse> GetMessageEndpointAsync(string messageId, System.Threading.CancellationToken cancellationToken)
         {
-            if (getMessageRequest == null)
-                throw new System.ArgumentNullException("getMessageRequest");
+            if (messageId == null)
+                throw new System.ArgumentNullException("messageId");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -201,7 +201,7 @@ namespace privatext.Client.HttpClient
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(getMessageRequest, _settings.Value);
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(messageId, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
@@ -486,22 +486,11 @@ namespace privatext.Client.HttpClient
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class GetMessageResponse
     {
-        [Newtonsoft.Json.JsonProperty("MessageDTO", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public MessageDTO2 MessageDTO { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class MessageDTO2
-    {
-        [Newtonsoft.Json.JsonProperty("MessageId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string MessageId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("Content", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("Content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Content { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("DateCreated", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset DateCreated { get; set; }
+        [Newtonsoft.Json.JsonProperty("DateCreated", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DateCreated { get; set; }
 
     }
 
