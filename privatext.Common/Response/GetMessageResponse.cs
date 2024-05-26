@@ -1,9 +1,7 @@
-﻿using privatext.Common.DTO;
+﻿namespace privatext.Common.Response;
 
-namespace privatext.Common.Response
+public class GetMessageResponse
 {
-    public class GetMessageResponse : BaseEndpointResponse
-    {
-        public MessageDTO MessageDTO { get; set; }
-    }
+    public string Content { get; set; }
+    public DateTime DateCreated { get; set; }
 }

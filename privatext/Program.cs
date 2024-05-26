@@ -1,6 +1,7 @@
 using FastEndpoints;
 using FastEndpoints.ClientGen;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using NJsonSchema.CodeGeneration.CSharp;
 using privatext.Client.HttpClient;
@@ -8,6 +9,7 @@ using privatext.Components;
 using privatext.Database;
 using privatext.Services;
 using Radzen;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,31 @@ builder.Services.AddScoped<IApiClient>(sp =>
        new HttpClient { BaseAddress = new Uri(builder.Configuration["BaseUrl"]) }));
 
 var app = builder.Build();
+app.UseExceptionHandler(errApp =>
+{
+    errApp.Run(async ctx =>
+    {
+        var exHandlerFeature = ctx.Features.Get<IExceptionHandlerFeature>();
+        if (exHandlerFeature != null)
+        {
+            var reason = exHandlerFeature.Error.Message;
+            string errorMessage = reason;
+            if(errorMessage.Contains("ThrowError() called! - "))
+            {
+                errorMessage = errorMessage.Replace("ThrowError() called! - ", string.Empty);
+            }
+
+            ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            ctx.Response.ContentType = "application/problem+json";
+            await ctx.Response.WriteAsJsonAsync(
+            new ErrorResponse
+            {
+                StatusCode = ctx.Response.StatusCode,
+                Message = errorMessage,
+            });
+        }
+    });
+});
 
 // Apply migration
 using (var scope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())

@@ -25,11 +25,11 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
     {
         var messageContent = await cryptoService.Encrypt(r.MessageDTO.Content, r.MessageDTO.MessageId);
         var messageId = r.MessageDTO.MessageId;
-        //var midpoint = messageId.Length / 2;
-        //var secondHalf = messageId.Substring(midpoint);
+        var midpoint = messageId.Length / 2;
+        var secondHalf = messageId.Substring(midpoint);
         var encMessageDTO = new Common.DTO.MessageDTO
         {
-            MessageId = messageId,
+            MessageId = secondHalf,
             Content = messageContent,
         };
 

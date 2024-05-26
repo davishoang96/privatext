@@ -1,0 +1,79 @@
+﻿@page "/text/{id}"
+@inject IApiClient ApiClient
+@using Newtonsoft.Json
+@using privatext.Client.HttpClient
+@using privatext.Common.Response
+
+
+<RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+    <RadzenColumn Size="3" />
+    <RadzenColumn Size="6">
+        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
+            <h3>ViewText</h3>
+            <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
+            <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
+            <h3>Your text message</h3>
+            <RadzenTextArea @bind-Value="@Content" Rows="15" Cols="100"></RadzenTextArea>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
+            <h3>@ErrorMessage</h3>
+        </RadzenStack>
+    </RadzenColumn>
+    <RadzenColumn Size="3" />
+</RadzenRow>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+    private bool IsTextViewed { get; set; }
+    private bool ShowViewTextBtn { get; set; }
+    private bool ShowDeletedNotification { get; set; }
+    private string ErrorMessage { get; set; }
+
+    private string Content { get; set; }
+    private string DateCreated { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ShowViewTextBtn = true;
+        ShowDeletedNotification = false;
+    }
+
+    private async Task ExecuteViewText()
+    {
+        ShowViewTextBtn = false;
+        try
+        {
+            var m = await ApiClient.GetMessageEndpointAsync(Id);
+            if (m is not null)
+            {
+                IsTextViewed = true;
+
+                Content = m.Content;
+                DateCreated = m.DateCreated.Value.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                IsTextViewed = false;
+                ShowDeletedNotification = true;
+            }
+        }
+        catch (ApiException apiEx)
+        {
+            var err = JsonConvert.DeserializeObject<ErrorResponse>(apiEx.Response);
+            ErrorMessage = err.Message;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = "Something wrong. Please contact administrator";
+        }
+        finally
+        {
+            ShowDeletedNotification = true;
+        }
+    }
+}

@@ -1,7 +1,9 @@
-﻿namespace privatext.Common.Request
+﻿using FastEndpoints;
+
+namespace privatext.Common.Request;
+
+public class GetMessageRequest
 {
-    public class GetMessageRequest
-    {
-        public string MessageId { get; set; }
-    }
+    [FromBody]
+    public string MessageId { get; set; }
 }
