@@ -1,13 +1,15 @@
 ﻿@page "/text/{id}"
 @inject IApiClient ApiClient
+@inject NavigationManager navigationService
 @using Newtonsoft.Json
 @using privatext.Client.HttpClient
 @using privatext.Common.Response
 
-
-<RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
-    <RadzenColumn Size="3" />
-    <RadzenColumn Size="6">
+<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 80vh;">
+    <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
+        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" Visible="@(!IsLoading)">
         <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
             <h3>ViewText</h3>
             <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
@@ -16,14 +18,17 @@
         <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
             <h3>Your text message</h3>
             <RadzenTextArea @bind-Value="@Content" Rows="15" Cols="100"></RadzenTextArea>
+            <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
-        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
-            <h3>@ErrorMessage</h3>
-        </RadzenStack>
-    </RadzenColumn>
-    <RadzenColumn Size="3" />
-</RadzenRow>
-
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
+        <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+            <p>The message has been viewed and deleted</p>
+        </RadzenCard>
+        <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+    </RadzenStack>
+</RadzenStack>
+ 
 @code {
 
     [Parameter]
@@ -31,10 +36,12 @@
     private bool IsTextViewed { get; set; }
     private bool ShowViewTextBtn { get; set; }
     private bool ShowDeletedNotification { get; set; }
-    private string ErrorMessage { get; set; }
+    private bool IsLoading { get; set; }
 
-    private string Content { get; set; }
-    private string DateCreated { get; set; }
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    private string Content { get; set; } = string.Empty;
+    private string DateCreated { get; set; } = default;
 
     protected override void OnInitialized()
     {
@@ -43,18 +50,23 @@
         ShowDeletedNotification = false;
     }
 
+    private void GoHome()
+    {
+        navigationService.NavigateTo("/");
+    }
+
     private async Task ExecuteViewText()
     {
         ShowViewTextBtn = false;
+        IsLoading = true;
         try
         {
             var m = await ApiClient.GetMessageEndpointAsync(Id);
             if (m is not null)
             {
                 IsTextViewed = true;
-
                 Content = m.Content;
-                DateCreated = m.DateCreated.Value.ToString("dd/MM/yyyy");
+                DateCreated = m.DateCreated.ToString("dd/MM/yyyy");
             }
             else
             {
@@ -64,16 +76,20 @@
         }
         catch (ApiException apiEx)
         {
-            var err = JsonConvert.DeserializeObject<ErrorResponse>(apiEx.Response);
-            ErrorMessage = err.Message;
+            ErrorMessage = JsonConvert.DeserializeObject<ErrorResponse>(apiEx.Response).Message;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorMessage = "Something wrong. Please contact administrator";
         }
         finally
         {
-            ShowDeletedNotification = true;
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ShowDeletedNotification = true;
+            }
+
+            IsLoading = false;
         }
     }
 }

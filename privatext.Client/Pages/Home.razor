@@ -9,57 +9,47 @@
 @using privatext.Services
 
 <PageTitle>Privatext</PageTitle>
-
-<RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
-    <RadzenColumn Size="3"/>
-    <RadzenColumn Size="6">
-        <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-            <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Horizontal">
-                <h4>Create your private text</h4>
-            </RadzenStack>
-            <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
-            <RadzenStack Orientation="Orientation.Horizontal">
-                <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
+<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 80vh;">
+    <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+        <h4>Create your private text</h4>
+        <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
+        </RadzenStack>
+    </RadzenStack>
+    <RadzenStack Visible="@(!@ShowTextInput)" JustifyContent="JustifyContent.Stretch" Orientation="Orientation.Vertical" Gap="10px">
+        <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
+        <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Stretch" Orientation="Orientation.Vertical" Visible="@(!@IsLoading)">
+            <RadzenFormField Text="Link" Style="width: 50vh">
+                <ChildContent>
+                    <RadzenTextBox @bind-Value="@TextUrl" />
+                </ChildContent>
+                <End>
+                    <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
+                </End>
+            </RadzenFormField>
+            <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
+                <RadzenButton>Copy link</RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
+                <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
             </RadzenStack>
         </RadzenStack>
-        <RadzenStack Visible="@ShowLink" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-            <RadzenStack JustifyContent="JustifyContent.Left" Orientation="Orientation.Vertical">
-                <RadzenStack Orientation="Orientation.Vertical">
-                    <RadzenFormField Text="Link">
-                        <Start>
-                            <RadzenIcon Icon="http" />
-                        </Start>
-                        <ChildContent>
-                            <RadzenTextBox @bind-Value="@TextUrl" />
-                        </ChildContent>
-                        <End>
-                            <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
-                        </End>
-                    </RadzenFormField>
-                    <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
-                        <RadzenButton>Copy link</RadzenButton>
-                        <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">New Text</RadzenButton>
-                    </RadzenStack>
-                </RadzenStack>
-            </RadzenStack>
-        </RadzenStack>
-    </RadzenColumn>
-    <RadzenColumn Size="3" />
-</RadzenRow>
+    </RadzenStack>
+</RadzenStack>
 
 @code {
 
     private string Content { get; set; }
     private string TextUrl { get; set; }
     private bool ShowTextInput { get; set; }
-    private bool ShowLink { get; set; }
     private string TextId { get; set; }
+    private bool IsLoading { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        ShowTextInput = !ShowLink;
-        Content = "qj;4o3mq;o34mvq34nv";
+        ShowTextInput = !ShowTextInput;
+        IsLoading = false;
     }
 
     private async Task CreateMessage()
@@ -76,6 +66,9 @@
             return;
         }
 
+        ShowTextInput = false;
+        IsLoading = true;
+
         var id = RandomString.Generate(32);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
@@ -86,13 +79,14 @@
             },
         });
 
+        await Task.Delay(2000);
+
         if(result)
         {
             TextId = id;
             TextUrl = $"{NavigationManager.BaseUri}text/{id}";
-            ShowLink = true;
             ShowTextInput = false;
-
+            IsLoading = false;
             NotificationService.Notify(new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,
@@ -106,6 +100,5 @@
     {
         Content = TextUrl = TextId = string.Empty;
         ShowTextInput = true;
-        ShowLink = false;
     }
 }

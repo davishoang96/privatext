@@ -37,6 +37,25 @@ builder.Services.AddScoped<IApiClient>(sp =>
        new HttpClient { BaseAddress = new Uri(builder.Configuration["BaseUrl"]) }));
 
 var app = builder.Build();
+
+// Apply migration
+using (var scope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<DatabaseContext>().Database.Migrate();
+}
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseWebAssemblyDebugging();
+}
+else
+{
+    //app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
 app.UseExceptionHandler(errApp =>
 {
     errApp.Run(async ctx =>
@@ -46,7 +65,7 @@ app.UseExceptionHandler(errApp =>
         {
             var reason = exHandlerFeature.Error.Message;
             string errorMessage = reason;
-            if(errorMessage.Contains("ThrowError() called! - "))
+            if (errorMessage.Contains("ThrowError() called! - "))
             {
                 errorMessage = errorMessage.Replace("ThrowError() called! - ", string.Empty);
             }
@@ -63,23 +82,6 @@ app.UseExceptionHandler(errApp =>
     });
 });
 
-// Apply migration
-using (var scope = ((IApplicationBuilder)app).ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
-{
-    scope.ServiceProvider.GetRequiredService<DatabaseContext>().Database.Migrate();
-}
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseWebAssemblyDebugging();
-}
-else
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
