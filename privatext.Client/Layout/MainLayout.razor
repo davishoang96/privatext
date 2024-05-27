@@ -2,24 +2,14 @@
 
 <RadzenComponents />
 
-<RadzenLayout Style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
+<RadzenLayout>
     <RadzenHeader>
-        <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Center">
-            @* <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" /> *@
-                <h5>Privatext</h5>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center">
+            <h5 style="margin: 15px">Privatext</h5>
         </RadzenStack>
     </RadzenHeader>
-    @* <RadzenSidebar @bind-Expanded="@sidebarExpanded">
-        <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home" />
-            <RadzenPanelMenuItem Text="Users" Icon="account_box" />
-        </RadzenPanelMenu>
-        <div class="rz-p-4">
-            Sidebar
-        </div>
-    </RadzenSidebar> *@
     <RadzenBody>
-        <div class="rz-p-4">
+        <div>
             @Body
         </div>
         <div id="blazor-error-ui">
