@@ -9,18 +9,50 @@
 @using privatext.Services
 
 <PageTitle>Privatext</PageTitle>
-<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 80vh;">
-    <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-        <h4>Create your private text</h4>
-        <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Rows="15" Cols="100"></RadzenTextArea>
-        <RadzenStack Orientation="Orientation.Horizontal">
-            <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
-        </RadzenStack>
+
+@* <div class="rz-p-0 rz-p-md-12">
+    <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
+        <RadzenColumn Size="12">
+            <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+                <h4 class="custom-font">Create your private text</h4>
+                <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15"></RadzenTextArea>
+                <RadzenStack Orientation="Orientation.Horizontal">
+                    <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
+                </RadzenStack>
+            </RadzenStack>
+            <RadzenStack Visible="@(!@ShowTextInput)" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+                <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
+                    <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
+                    <RadzenFormField Text="Share this link: " Style="width: 50vh">
+                        <ChildContent>
+                            <RadzenTextBox @bind-Value="@TextUrl" />
+                        </ChildContent>
+                        <End>
+                            <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
+                        </End>
+                    </RadzenFormField>
+                </RadzenStack>
+                <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
+                    <RadzenButton>Copy link</RadzenButton>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
+                    <RadzenButton class="rz-shadow-6 rz-ripple smooch-sans" Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div> *@
+
+<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
+    <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px" Style="width: 35vw; height: 70vh">
+        <h4 class="custom-font">Create your private text</h4>
+        <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="5" />
+        <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
     </RadzenStack>
-    <RadzenStack Visible="@(!@ShowTextInput)" JustifyContent="JustifyContent.Stretch" Orientation="Orientation.Vertical" Gap="10px">
-        <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
-        <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Stretch" Orientation="Orientation.Vertical" Visible="@(!@IsLoading)">
-            <RadzenFormField Text="Link" Style="width: 50vh">
+    <RadzenStack Visible="@(!@ShowTextInput)" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+        <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="5px" Style="width: 35vw; height: 70vh">
+            <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Link</RadzenText>
+            <RadzenFormField Text="Share this link: ">
                 <ChildContent>
                     <RadzenTextBox @bind-Value="@TextUrl" />
                 </ChildContent>
@@ -28,14 +60,15 @@
                     <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
                 </End>
             </RadzenFormField>
-            <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
-                <RadzenButton>Copy link</RadzenButton>
-                <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
-                <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
-            </RadzenStack>
+            <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
+            <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15" />
+            <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
+            <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
+            <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
     </RadzenStack>
 </RadzenStack>
+
 
 @code {
 
