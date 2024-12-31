@@ -5,29 +5,32 @@
 @using privatext.Client.HttpClient
 @using privatext.Common.Response
 
-<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 80vh;">
-    <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
-        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
-    </RadzenStack>
-    <RadzenStack Orientation="Orientation.Vertical" Visible="@(!IsLoading)">
-        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
-            <h3>ViewText</h3>
-            <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
-            <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+<RadzenRow Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
+    <RadzenColumn Size="12">
+        <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
+            <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
         </RadzenStack>
-        <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
-            <h3>Your text message</h3>
-            <RadzenTextArea @bind-Value="@Content" Rows="15" Cols="100"></RadzenTextArea>
+        <RadzenStack Visible="@(!IsLoading)" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+            <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
+                <h3>View the private text message</h3>
+                <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
+                <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
+                <h3>Your text message</h3>
+                <RadzenTextArea @bind-Value="@Content" Rows="15" Cols="69"></RadzenTextArea>
+                <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
+            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+                <p>The message has been viewed and deleted</p>
+            </RadzenCard>
             <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
-    </RadzenStack>
-    <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
-        <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
-            <p>The message has been viewed and deleted</p>
-        </RadzenCard>
-        <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
-    </RadzenStack>
-</RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+
  
 @code {
 
