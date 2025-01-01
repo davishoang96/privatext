@@ -8,12 +8,10 @@ namespace privatext.Endpoints;
 
 public class GetMessageEndpoint : Endpoint<GetMessageRequest, GetMessageResponse>
 {
-    private readonly ICryptoService cryptoService;
     private readonly IMessageService messageService;
-    public GetMessageEndpoint(IMessageService messageService, ICryptoService cryptoService)
+    public GetMessageEndpoint(IMessageService messageService)
     {
         this.messageService = messageService;
-        this.cryptoService = cryptoService;
     }
 
     public override void Configure()
@@ -26,9 +24,7 @@ public class GetMessageEndpoint : Endpoint<GetMessageRequest, GetMessageResponse
     public override async Task HandleAsync(GetMessageRequest r, CancellationToken c)
     {
         var res = new GetMessageResponse();
-        var midpoint = r.MessageId.Length / 2;
-        var secondHalf = r.MessageId.Substring(midpoint);
-        var model = messageService.GetMessage(secondHalf);
+        var model = messageService.GetMessage(r.MessageId);
         if (model == null)
         {
             ThrowError(new ValidationFailure
@@ -39,7 +35,7 @@ public class GetMessageEndpoint : Endpoint<GetMessageRequest, GetMessageResponse
             });
         }
 
-        if (!await messageService.DeleteMessage(secondHalf))
+        if (!await messageService.DeleteMessage(r.MessageId))
         {
             ThrowError(new ValidationFailure
             {
@@ -49,8 +45,7 @@ public class GetMessageEndpoint : Endpoint<GetMessageRequest, GetMessageResponse
             });
         }
 
-        var decryptedMessage = await cryptoService.Decrypt(model.Content, r.MessageId);
-        res.Content = decryptedMessage;
+        res.Content = model.Content;
         res.DateCreated = model.DateCreated;
         await SendAsync(res);
     }

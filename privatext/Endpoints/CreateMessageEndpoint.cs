@@ -6,12 +6,10 @@ namespace privatext.Endpoints;
 
 public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
 {
-    private readonly ICryptoService cryptoService;
     private readonly IMessageService messageService;
-    public CreateMessageEndpoint(IMessageService messageService, ICryptoService cryptoService)
+    public CreateMessageEndpoint(IMessageService messageService)
     {
         this.messageService = messageService;
-        this.cryptoService = cryptoService;
     }
 
     public override void Configure()
@@ -22,14 +20,10 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
 
     public override async Task HandleAsync(CreateMessageRequest r, CancellationToken c)
     {
-        var messageContent = await cryptoService.Encrypt(r.MessageDTO.Content, r.MessageDTO.MessageId);
-        var messageId = r.MessageDTO.MessageId;
-        var midpoint = messageId.Length / 2;
-        var secondHalf = messageId.Substring(midpoint);
         var encMessageDTO = new Common.DTO.MessageDTO
         {
-            MessageId = secondHalf,
-            Content = messageContent,
+            MessageId = r.MessageDTO.MessageId,
+            Content = r.MessageDTO.Content,
         };
 
         if (await messageService.CreateMessage(encMessageDTO))
