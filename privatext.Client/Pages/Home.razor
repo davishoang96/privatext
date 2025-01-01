@@ -3,14 +3,11 @@
 @inject IRandomString RandomString
 @inject NavigationManager NavigationManager
 @inject NotificationService NotificationService
-@using System.Security.Cryptography
-@using System.Text
 @using privatext.Client.HttpClient
 @using privatext.Services
 @inject ICryptoService CryptService;
 
 <PageTitle>Privatext</PageTitle>
-
 <RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
     <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px" Style="width: 35vw; height: 70vh">
         <h4 class="custom-font">Create your private text</h4>
@@ -32,7 +29,7 @@
             <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
             <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15" />
             <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
-            <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
+            <RadzenButton Click="@DeleteMessage" ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
             <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
     </RadzenStack>
@@ -54,6 +51,45 @@
         IsLoading = false;
     }
 
+    private string GetMessageId(string key)
+    {
+        var midpoint = key.Length / 2;
+        return key.Substring(midpoint);
+    }
+
+    private async Task DeleteMessage()
+    {
+        if (string.IsNullOrEmpty(TextId))
+        {
+            NotificationService.Notify(new NotificationMessage 
+            { 
+                Severity = NotificationSeverity.Error, 
+                Summary = "Warning", 
+                Detail = "Cannot delete the message",
+            });
+            
+            return;
+        }
+
+        var messageId = GetMessageId(TextId);
+        var res = await ApiClient.DeleteMessageEndpointAsync(new DeleteMessageRequest
+        {
+            MessageId = messageId
+        });
+
+        if (res)
+        {
+            NewText();
+            NotificationService.Notify(new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "Status",
+                Detail = "Private text successfully deleted",
+            });
+        }
+    }
+    
+
     private async Task CreateMessage()
     {
         if(string.IsNullOrEmpty(Content))
@@ -73,13 +109,12 @@
 
         var messageId = RandomString.Generate(32);
         var messageContent = await CryptService.Encrypt(Content, messageId);
-        var midpoint = messageId.Length / 2;
-        var secondHalf = messageId.Substring(midpoint);
+        var Id = GetMessageId(messageId);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
             MessageDTO = new MessageDTO
             {
-                MessageId = secondHalf,
+                MessageId = Id,
                 Content = messageContent,
             },
         });
