@@ -20,7 +20,6 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
         AllowAnonymous();
     }
 
-    // NOTE: This is for testing purpose only. Not really great way to handle encryption where you store client key in database.
     public override async Task HandleAsync(CreateMessageRequest r, CancellationToken c)
     {
         var messageContent = await cryptoService.Encrypt(r.MessageDTO.Content, r.MessageDTO.MessageId);
