@@ -27,7 +27,7 @@
                 </End>
             </RadzenFormField>
             <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
-            <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15" />
+            <RadzenTextArea ReadOnly="true" Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15" />
             <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
             <RadzenButton Click="@DeleteMessage" ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
             <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
