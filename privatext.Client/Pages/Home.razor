@@ -7,40 +7,9 @@
 @using System.Text
 @using privatext.Client.HttpClient
 @using privatext.Services
+@inject ICryptoService CryptService;
 
 <PageTitle>Privatext</PageTitle>
-
-@* <div class="rz-p-0 rz-p-md-12">
-    <RadzenRow JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
-        <RadzenColumn Size="12">
-            <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-                <h4 class="custom-font">Create your private text</h4>
-                <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15"></RadzenTextArea>
-                <RadzenStack Orientation="Orientation.Horizontal">
-                    <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
-                </RadzenStack>
-            </RadzenStack>
-            <RadzenStack Visible="@(!@ShowTextInput)" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-                <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
-                    <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
-                    <RadzenFormField Text="Share this link: " Style="width: 50vh">
-                        <ChildContent>
-                            <RadzenTextBox @bind-Value="@TextUrl" />
-                        </ChildContent>
-                        <End>
-                            <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
-                        </End>
-                    </RadzenFormField>
-                </RadzenStack>
-                <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Horizontal">
-                    <RadzenButton>Copy link</RadzenButton>
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
-                    <RadzenButton class="rz-shadow-6 rz-ripple smooch-sans" Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
-                </RadzenStack>
-            </RadzenStack>
-        </RadzenColumn>
-    </RadzenRow>
-</div> *@
 
 <RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
     <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px" Style="width: 35vw; height: 70vh">
@@ -102,20 +71,23 @@
         ShowTextInput = false;
         IsLoading = true;
 
-        var id = RandomString.Generate(32);
+        var messageId = RandomString.Generate(32);
+        var messageContent = await CryptService.Encrypt(Content, messageId);
+        var midpoint = messageId.Length / 2;
+        var secondHalf = messageId.Substring(midpoint);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
             MessageDTO = new MessageDTO
             {
-                MessageId = id,
-                Content = Content,
+                MessageId = secondHalf,
+                Content = messageContent,
             },
         });
 
         if(result)
         {
-            TextId = id;
-            TextUrl = $"{NavigationManager.BaseUri}text/{id}";
+            TextId = messageId;
+            TextUrl = $"{NavigationManager.BaseUri}text/{messageId}";
             ShowTextInput = false;
             IsLoading = false;
             NotificationService.Notify(new NotificationMessage
