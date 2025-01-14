@@ -1,18 +1,24 @@
 ﻿@inherits LayoutComponentBase
+<RadzenComponents />
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
+        @* <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+        </div> *@
+        <RadzenHeader>
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+                <RadzenSidebarToggle />
+                <RadzenLabel Text="Privatext" />
+            </RadzenStack>
+        </RadzenHeader>
+        <RadzenBody>
+            <div class="rz-p-4">
+                @Body
+            </div>
+        </RadzenBody>
+           @*  <article class="content px-4">
+            </article> *@
     </main>
 </div>
 
@@ -21,3 +27,22 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+
+
+@* <RadzenLayout style="page">
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle />
+            <RadzenLabel Text="Privatext" />
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenBody>
+        <div class="rz-p-4">
+            @Body
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        © 2025 Privatext.com
+    </RadzenFooter>
+</RadzenLayout> *@

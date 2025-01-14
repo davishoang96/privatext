@@ -1,0 +1,102 @@
+﻿@page "/text/{id}"
+@inject IApiClient ApiClient
+@inject NavigationManager navigationService
+@inject ICryptoService CryptService
+@using Newtonsoft.Json
+@using privatext.Common.Response
+@using privatext.Services
+
+<RadzenRow Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
+    <RadzenColumn Size="12">
+        <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
+            <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+        </RadzenStack>
+        <RadzenStack Visible="@(!IsLoading)" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+            <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
+                <h3>View the private text message</h3>
+                <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
+                <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
+                <h3>Your text message</h3>
+                <RadzenTextArea ReadOnly="true" @bind-Value="@Content" Rows="15" Cols="69"></RadzenTextArea>
+                <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
+            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+                <p>The message has been viewed and deleted</p>
+            </RadzenCard>
+            <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+        </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+
+ 
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+    private bool IsTextViewed { get; set; }
+    private bool ShowViewTextBtn { get; set; }
+    private bool ShowDeletedNotification { get; set; }
+    private bool IsLoading { get; set; }
+
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    private string Content { get; set; } = string.Empty;
+    private string DateCreated { get; set; } = default;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ShowViewTextBtn = true;
+        ShowDeletedNotification = false;
+    }
+
+    private void GoHome()
+    {
+        navigationService.NavigateTo("/");
+    }
+
+    private async Task ExecuteViewText()
+    {
+        ShowViewTextBtn = false;
+        IsLoading = true;
+        try
+        {
+            var midpoint = Id.Length / 2;
+            var messageId = Id.Substring(midpoint);
+            var res = await ApiClient.GetMessageEndpointAsync(messageId);
+            if (res is not null)
+            {
+                IsTextViewed = true;
+                var decryptedMessage = await CryptService.Decrypt(res.Content, Id);
+                Content = decryptedMessage;
+                DateCreated = res.DateCreated.ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                IsTextViewed = false;
+                ShowDeletedNotification = true;
+            }
+        }
+        catch (ApiException apiEx)
+        {
+            ErrorMessage = JsonConvert.DeserializeObject<ErrorResponse>(apiEx.Response).Message;
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Something wrong. Please contact administrator";
+        }
+        finally
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ShowDeletedNotification = true;
+            }
+
+            IsLoading = false;
+        }
+    }
+}
