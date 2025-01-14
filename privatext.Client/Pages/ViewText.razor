@@ -1,33 +1,38 @@
 ﻿@page "/text/{id}"
 @inject IApiClient ApiClient
 @inject NavigationManager navigationService
+@inject ICryptoService CryptService
 @using Newtonsoft.Json
 @using privatext.Client.HttpClient
 @using privatext.Common.Response
+@using privatext.Services
 
-<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="height: 80vh;">
-    <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
-        <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
-    </RadzenStack>
-    <RadzenStack Orientation="Orientation.Vertical" Visible="@(!IsLoading)">
-        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
-            <h3>ViewText</h3>
-            <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
-            <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+<RadzenRow Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
+    <RadzenColumn Size="12">
+        <RadzenStack JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Visible="@IsLoading">
+            <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
         </RadzenStack>
-        <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
-            <h3>Your text message</h3>
-            <RadzenTextArea @bind-Value="@Content" Rows="15" Cols="100"></RadzenTextArea>
+        <RadzenStack Visible="@(!IsLoading)" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+            <RadzenStack Orientation="Orientation.Vertical" Visible="ShowViewTextBtn">
+                <h3>View the private text message</h3>
+                <RadzenText>The text will be automatically remove from the server once you view it.</RadzenText>
+                <RadzenButton Click="@ExecuteViewText">View Text</RadzenButton>
+            </RadzenStack>
+            <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
+                <h3>Your text message</h3>
+                <RadzenTextArea ReadOnly="true" @bind-Value="@Content" Rows="15" Cols="69"></RadzenTextArea>
+                <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+            </RadzenStack>
+        </RadzenStack>
+        <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
+            <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
+                <p>The message has been viewed and deleted</p>
+            </RadzenCard>
             <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
-    </RadzenStack>
-    <RadzenStack Orientation="Orientation.Vertical" Visible="ShowDeletedNotification">
-        <RadzenCard Variant="Variant.Filled" Class="rz-my-12 rz-mx-auto" Style="max-width: 420px">
-            <p>The message has been viewed and deleted</p>
-        </RadzenCard>
-        <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
-    </RadzenStack>
-</RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+
  
 @code {
 
@@ -61,12 +66,15 @@
         IsLoading = true;
         try
         {
-            var m = await ApiClient.GetMessageEndpointAsync(Id);
-            if (m is not null)
+            var midpoint = Id.Length / 2;
+            var messageId = Id.Substring(midpoint);
+            var res = await ApiClient.GetMessageEndpointAsync(messageId);
+            if (res is not null)
             {
                 IsTextViewed = true;
-                Content = m.Content;
-                DateCreated = m.DateCreated.ToString("dd/MM/yyyy");
+                var decryptedMessage = await CryptService.Decrypt(res.Content, Id);
+                Content = decryptedMessage;
+                DateCreated = res.DateCreated.ToString("dd/MM/yyyy");
             }
             else
             {
