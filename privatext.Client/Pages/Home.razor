@@ -11,7 +11,9 @@
 <RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
     <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px" Style="width: 35vw; height: 70vh">
         <h4 class="custom-font">Create your private text</h4>
-        <RadzenTextArea Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="5" />
+        <div>
+            <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="5" />
+        </div>
         <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
     </RadzenStack>
     <RadzenStack Visible="@(!@ShowTextInput)" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
@@ -27,14 +29,15 @@
                 </End>
             </RadzenFormField>
             <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
-            <RadzenTextArea ReadOnly="true" Style="width: 100%" @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="15" />
+            <div>
+                <RadzenTextArea ReadOnly="true" Style="width: 100%" @bind-Value="@Content" MaxLength="4000" Cols="79" Rows="15" />
+            </div>
             <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
             <RadzenButton Click="@DeleteMessage" ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
             <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
         </RadzenStack>
     </RadzenStack>
 </RadzenStack>
-
 
 @code {
 
