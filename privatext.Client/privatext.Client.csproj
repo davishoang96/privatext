@@ -16,8 +16,4 @@
 		<PackageReference Include="Radzen.Blazor" Version="5.7.2" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="HttpClient\" />
-	</ItemGroup>
-
 </Project>
