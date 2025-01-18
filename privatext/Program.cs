@@ -4,7 +4,6 @@ using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using NJsonSchema.CodeGeneration.CSharp;
-using privatext.Client.HttpClient;
 using privatext.Components;
 using privatext.Database;
 using privatext.Services;
@@ -98,13 +97,15 @@ app.UseFastEndpoints(c =>
 
 await app.GenerateClientsAndExitAsync(
     documentName: "MyAPI",
-    destinationPath: "../privatext.Client/HttpClient",
+    destinationPath: "../privatext.Services/",
     csSettings: c =>
     {
         c.ClassName = "ApiClient";
         c.InjectHttpClient = true;
         c.GenerateClientInterfaces = true;
-        c.CSharpGeneratorSettings.Namespace = "privatext.Client.HttpClient";
+        c.GenerateDtoTypes = false;
+        c.CSharpGeneratorSettings.Namespace = "privatext.Services";
+        c.AdditionalNamespaceUsages = ["privatext.Common.DTO", "privatext.Common.Request", "privatext.Common.Response"];
         c.CSharpGeneratorSettings.JsonLibrary = CSharpJsonLibrary.NewtonsoftJson;
     },
     tsSettings: null);

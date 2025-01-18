@@ -1,5 +1,5 @@
 using FastEndpoints;
-using privatext.Client.HttpClient;
+using privatext.Common.Request;
 using privatext.Services;
 
 namespace privatext.Endpoints;

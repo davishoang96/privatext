@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using privatext.Client.HttpClient;
 using privatext.Services;
 using Radzen;
 
