@@ -1,4 +1,5 @@
 using FastEndpoints;
+using privatext.Common.DTO;
 using privatext.Common.Request;
 using privatext.Services;
 
@@ -20,8 +21,9 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
 
     public override async Task HandleAsync(CreateMessageRequest r, CancellationToken c)
     {
-        var encMessageDTO = new Common.DTO.MessageDTO
+        var encMessageDTO = new MessageDTO
         {
+            KeyIdentifer = r.MessageDTO.KeyIdentifer,
             MessageId = r.MessageDTO.MessageId,
             Content = r.MessageDTO.Content,
         };

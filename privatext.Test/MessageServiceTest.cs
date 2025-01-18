@@ -25,6 +25,7 @@ public class MessageServiceTest : BaseDataContextTest
         {
             var model = new Message
             {
+                KeyIdentifier = "aeri;ajoermv2545423",
                 MessageId = "asdofij!@#",
                 Content = "#fgaje;jf'pvcxi123",
                 DateCreated = dateCreated,
@@ -50,6 +51,7 @@ public class MessageServiceTest : BaseDataContextTest
         {
             var model = new Message
             {
+                KeyIdentifier = "4534it;2ogni;df",
                 MessageId = "asdofij!@#",
                 Content = "#fgaje;jf'pvcxi123",
                 DateCreated = DateTime.Now,
@@ -76,6 +78,7 @@ public class MessageServiceTest : BaseDataContextTest
         var content = "qjg;p8943j";
         var dto = new MessageDTO
         {
+            KeyIdentifer = "qwefaew",
             MessageId = "12512wd",
             Content = content,
             DateCreated = DateTime.Now,

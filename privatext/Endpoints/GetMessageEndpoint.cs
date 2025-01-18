@@ -45,6 +45,7 @@ public class GetMessageEndpoint : Endpoint<GetMessageRequest, GetMessageResponse
             });
         }
 
+        res.KeyIdentifier = model.KeyIdentifer;
         res.Content = model.Content;
         res.DateCreated = model.DateCreated;
         await SendAsync(res);

@@ -21,6 +21,7 @@ public class MessageService : IMessageService
 
         await db.Messages.AddAsync(new Message
         {
+            KeyIdentifier = messageDTO.KeyIdentifer,
             MessageId = messageDTO.MessageId,
             Content = messageDTO.Content,
             DateCreated = DateTime.Now,
@@ -65,6 +66,7 @@ public class MessageService : IMessageService
 
         return new MessageDTO
         {
+            KeyIdentifer = message.KeyIdentifier,
             MessageId = message.MessageId,
             Content = message.Content,
             DateCreated = message.DateCreated,
