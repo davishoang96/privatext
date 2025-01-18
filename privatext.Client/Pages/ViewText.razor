@@ -38,7 +38,7 @@
     </RadzenColumn>
 </RadzenRow>
 
- 
+
 @code {
 
     [Parameter]
@@ -71,13 +71,14 @@
         IsLoading = true;
         try
         {
-            var midpoint = Id.Length / 2;
-            var messageId = Id.Substring(midpoint);
+            var messageId = Id.Substring(0, 4);
+            var clientKey = Id.Substring(5, 9);
             var res = await ApiClient.GetMessageEndpointAsync(messageId);
             if (res is not null)
             {
                 IsTextViewed = true;
-                var decryptedMessage = await CryptService.Decrypt(res.Content, Id);
+                var key = clientKey + res.KeyIdentifier;
+                var decryptedMessage = await CryptService.Decrypt(res.Content, key);
                 Content = decryptedMessage;
                 DateCreated = res.DateCreated.ToString("dd/MM/yyyy");
             }

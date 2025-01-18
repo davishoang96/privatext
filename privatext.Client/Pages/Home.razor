@@ -71,7 +71,7 @@
                 Summary = "Warning", 
                 Detail = "Cannot delete the message",
             });
-            
+
             return;
         }
 
@@ -92,7 +92,7 @@
             });
         }
     }
-    
+
 
     private async Task CreateMessage()
     {
@@ -111,22 +111,26 @@
         ShowTextInput = false;
         IsLoading = true;
 
-        var messageId = RandomString.Generate(32);
-        var messageContent = await CryptService.Encrypt(Content, messageId);
-        var Id = GetMessageId(messageId);
+        var key = RandomString.Generate(32);
+        var urlId = RandomString.Generate(4);
+        var messageContent = await CryptService.Encrypt(Content, key);
+        var clientKey = key.Substring(0, 9);
+        var keyIdentifier = key.Substring(9);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
             MessageDTO = new MessageDTO
             {
-                MessageId = Id,
+                KeyIdentifer = keyIdentifier,
+                MessageId = urlId,
                 Content = messageContent,
             },
         });
 
         if(result)
         {
-            TextId = messageId;
-            TextUrl = $"{NavigationManager.BaseUri}text/{messageId}";
+            TextId = key;
+            TextUrl = $"{NavigationManager.BaseUri}text/{urlId}${clientKey}";
+            return;
             ShowTextInput = false;
             IsLoading = false;
             NotificationService.Notify(new NotificationMessage
