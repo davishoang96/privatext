@@ -16,7 +16,8 @@
     <RadzenColumn Size="6">
         <RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center">
             <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-                <h4 class="custom-font">Create your private text</h4>
+                <h4 class="custom-font">New message</h4>
+                <p>The message will be deleted as soon as it is read.</p>
                 <div>
                     <RadzenTextArea @bind-Value="@Content" Style="width: 100%" Placeholder="Enter your text message here..." MaxLength="4000" Rows="15" Cols="69" />
                 </div>
@@ -52,7 +53,7 @@
     private string Content { get; set; }
     private string TextUrl { get; set; }
     private bool ShowTextInput { get; set; }
-    private string TextId { get; set; }
+    private string Id { get; set; }
     private bool IsLoading { get; set; }
 
     protected override void OnInitialized()
@@ -62,15 +63,9 @@
         IsLoading = false;
     }
 
-    private string GetMessageId(string key)
-    {
-        var midpoint = key.Length / 2;
-        return key.Substring(midpoint);
-    }
-
     private async Task DeleteMessage()
     {
-        if (string.IsNullOrEmpty(TextId))
+        if (string.IsNullOrEmpty(Id))
         {
             NotificationService.Notify(new NotificationMessage 
             { 
@@ -82,10 +77,9 @@
             return;
         }
 
-        var messageId = GetMessageId(TextId);
         var res = await ApiClient.DeleteMessageEndpointAsync(new DeleteMessageRequest
         {
-            MessageId = messageId
+            MessageId = Id
         });
 
         if (res)
@@ -135,9 +129,8 @@
 
         if(result)
         {
-            TextId = key;
+            Id = urlId;
             TextUrl = $"{NavigationManager.BaseUri}text/{urlId}${clientKey}";
-            return;
             ShowTextInput = false;
             IsLoading = false;
             NotificationService.Notify(new NotificationMessage
@@ -151,7 +144,7 @@
 
     private void NewText()
     {
-        Content = TextUrl = TextId = string.Empty;
+        Content = TextUrl = Id = string.Empty;
         ShowTextInput = true;
     }
 }
