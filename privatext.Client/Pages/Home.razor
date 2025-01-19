@@ -9,36 +9,43 @@
 @inject ICryptoService CryptService;
 
 <PageTitle>Privatext</PageTitle>
-<RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center">
-    <RadzenStack Visible="@ShowTextInput" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px" Style="width: 35vw; height: 70vh">
-        <h4 class="custom-font">Create your private text</h4>
-        <div>
-            <RadzenTextArea @bind-Value="@Content" Placeholder="Enter your text message here..." MaxLength="4000" Cols="79" Rows="5" />
-        </div>
-        <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
-    </RadzenStack>
-    <RadzenStack Visible="@(!@ShowTextInput)" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
-        <RadzenStack JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="5px" Style="width: 35vw; height: 70vh">
-            <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
-            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Link</RadzenText>
-            <RadzenFormField Text="Share this link: ">
-                <ChildContent>
-                    <RadzenTextBox @bind-Value="@TextUrl" />
-                </ChildContent>
-                <End>
-                    <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
-                </End>
-            </RadzenFormField>
-            <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
-            <div>
-                <RadzenTextArea ReadOnly="true" Style="width: 100%" @bind-Value="@Content" MaxLength="4000" Cols="79" Rows="15" />
-            </div>
-            <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
-            <RadzenButton Click="@DeleteMessage" ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
-            <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+
+<RadzenRow Orientation="Orientation.Vertical" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Gap="2rem">
+    <RadzenColumn Size="3">
+    </RadzenColumn>
+    <RadzenColumn Size="6">
+        <RadzenStack Orientation="Orientation.Vertical" Gap="2rem" JustifyContent="JustifyContent.Center">
+            <RadzenStack Visible="@ShowTextInput" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+                <h4 class="custom-font">Create your private text</h4>
+                <div>
+                    <RadzenTextArea @bind-Value="@Content" Style="width: 100%" Placeholder="Enter your text message here..." MaxLength="4000" Rows="15" Cols="69" />
+                </div>
+                <RadzenButton Click="@CreateMessage" Text="Create" ButtonStyle="ButtonStyle.Success" />
+            </RadzenStack>
+            <RadzenStack Visible="@(!@ShowTextInput)" JustifyContent="JustifyContent.Center" Orientation="Orientation.Vertical" Gap="10px">
+                <RadzenProgressBarCircular ShowValue="false" Visible="@IsLoading" Mode="ProgressBarMode.Indeterminate" />
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Link</RadzenText>
+                <RadzenFormField Text="Share this link: ">
+                    <ChildContent>
+                        <RadzenTextBox @bind-Value="@TextUrl" />
+                    </ChildContent>
+                    <End>
+                        <RadzenIcon Visible="true" Icon="done" IconStyle="IconStyle.Secondary" />
+                    </End>
+                </RadzenFormField>
+                <RadzenText TextStyle="TextStyle.Subtitle2">Your message</RadzenText>
+                <div>
+                    <RadzenTextArea ReadOnly="true" Style="width: 100%" @bind-Value="@Content" MaxLength="4000" Rows="15" Cols="69" />
+                </div>
+                <RadzenText TextStyle="TextStyle.Caption">(you will only see this once)</RadzenText>
+                <RadzenButton Click="@DeleteMessage" ButtonStyle="ButtonStyle.Danger">Delete</RadzenButton>
+                <RadzenButton Click="@NewText" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
+            </RadzenStack>
         </RadzenStack>
-    </RadzenStack>
-</RadzenStack>
+    </RadzenColumn>
+    <RadzenColumn Size="3">
+    </RadzenColumn>
+</RadzenRow>
 
 @code {
 

@@ -22,7 +22,7 @@
             <RadzenStack Orientation="Orientation.Vertical" Visible="IsTextViewed">
                 <h3>Your text message</h3>
                 <div>
-                    <RadzenTextArea ReadOnly="true" @bind-Value="@Content" Rows="15" Cols="69"></RadzenTextArea>
+                    <RadzenTextArea Style="width: 100%" ReadOnly="true" @bind-Value="@Content" Rows="15" Cols="69"></RadzenTextArea>
                 </div>
                 <RadzenButton Click="@GoHome" ButtonStyle="ButtonStyle.Success">Create</RadzenButton>
             </RadzenStack>
@@ -37,7 +37,6 @@
     <RadzenColumn Size="3">
     </RadzenColumn>
 </RadzenRow>
-
 
 @code {
 
