@@ -26,4 +26,4 @@ jobs:
         run: dotnet build -c Release
 
       - name: Publish project
-        run: dotnet publish -c Release -o ../privatext
+        run: dotnet publish -c Release -o ../privatext_production
