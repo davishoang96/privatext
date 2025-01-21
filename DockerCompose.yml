@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  privatext-app:
+    image: privatext-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "443:5000"
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+    volumes:
+      - ./publish:/app
+    restart: unless-stopped
