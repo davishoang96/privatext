@@ -16,7 +16,7 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3.3.0
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ variables.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Set up .NET Core
@@ -40,7 +40,7 @@ jobs:
       #    chmod 664 privatext-app.tar
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/privatext-app:latest
+        run: docker push ${{ variables.DOCKER_USERNAME }}/privatext-app:latest
   
       #- name: copy file via ssh password
       #  uses: appleboy/scp-action@v0.1.7
