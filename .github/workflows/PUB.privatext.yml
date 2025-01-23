@@ -32,7 +32,7 @@ jobs:
         run: dotnet publish -c Release -o publish
 
       - name: Build Docker image
-        run: docker build -t privatext-app:latest .
+        run: docker build -t davishoang96/privatext-app:latest .
 
       #- name: Save Docker image
       #  run: | 
