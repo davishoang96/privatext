@@ -40,7 +40,7 @@ jobs:
       #    chmod 664 privatext-app.tar
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ variables.DOCKER_USERNAME }}/privatext-app:latest
+        run: docker push davishoang96/privatext-app:latest
   
       #- name: copy file via ssh password
       #  uses: appleboy/scp-action@v0.1.7
