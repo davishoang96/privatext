@@ -8,6 +8,7 @@
 @using privatext.Common.Request
 @using privatext.Services
 @inject ICryptoService CryptService;
+@inject IJSRuntime JSRuntime
 
 <PageTitle>privatext</PageTitle>
 <MudSpacer />
@@ -37,7 +38,9 @@ else
         else
         {
             <h6 style="font-family: Consolas">Link: </h6>
-            <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" @bind-Value="@TextUrl" />
+            <MudTextField Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy"
+                          OnAdornmentClick="@CopyToClipboard"
+                          Style="font-family: Consolas" Variant="Variant.Outlined" @bind-Value="@Link" />
             <MudText Typo="Typo.h6">Your message</MudText>
             <MudTextField Lines="10" Style="font-family: Consolas" Variant="Variant.Outlined"
                           ReadOnly="true" @bind-Value="@Content" FullWidth="true" />
@@ -48,16 +51,20 @@ else
     </MudStack>
 }
 
-<style>
-    .custom-font {
-        font-family: 'Roboto', sans-serif;
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('Copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
     }
-</style>
+</script>
 
 @code {
 
     private string Content { get; set; }
-    private string TextUrl { get; set; }
+    private string Link { get; set; }
     private bool ShowTextInput { get; set; }
     private string Id { get; set; }
     private bool IsLoading { get; set; }
@@ -69,8 +76,9 @@ else
         IsLoading = false;
     }
 
-    private void CopyToClipboard()
+    private async Task CopyToClipboard()
     {
+        await JSRuntime.InvokeVoidAsync("copyToClipboard", Link);
         Snackbar.Add("Copied to clipboard", Severity.Success);
     }
 
@@ -125,7 +133,7 @@ else
         if(result)
         {
             Id = urlId;
-            TextUrl = $"{NavigationManager.BaseUri}text/{urlId}${clientKey}";
+            Link = $"{NavigationManager.BaseUri}text/{urlId}${clientKey}";
             ShowTextInput = false;
             IsLoading = false;
             Snackbar.Add("Message saved!", Severity.Success);
@@ -134,7 +142,7 @@ else
 
     private void NewText()
     {
-        Content = TextUrl = Id = string.Empty;
+        Content = Link = Id = string.Empty;
         ShowTextInput = true;
     }
 }
