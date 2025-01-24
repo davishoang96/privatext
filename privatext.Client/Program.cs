@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using privatext.Services;
 using Radzen;
 
@@ -9,5 +10,5 @@ builder.Services.AddSingleton<ICryptoService, CryptoService>();
 builder.Services.AddScoped<IApiClient>(sp =>
         new ApiClient(builder.Configuration["BaseUrl"],
         new HttpClient { BaseAddress = new Uri(builder.Configuration["BaseUrl"]) }));
-builder.Services.AddRadzenComponents();
+builder.Services.AddMudServices();
 await builder.Build().RunAsync();
