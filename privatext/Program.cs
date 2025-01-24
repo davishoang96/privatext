@@ -8,7 +8,7 @@ using NJsonSchema.CodeGeneration.CSharp;
 using privatext.Components;
 using privatext.Database;
 using privatext.Services;
-using Radzen;
+using Quartz;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +25,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSingleton<IRandomString, RandomString>();
 builder.Services.AddSingleton<ICryptoService, CryptoService>();
+
+// Add Quartz services
+builder.Services.AddQuartz(q =>
+{
+});
+
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+});
+
+// Register your job as a service
+builder.Services.AddTransient<DeleteMessageJob>();
 
 // Add services to the container.
 builder.Services.AddMudServices();
