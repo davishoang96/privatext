@@ -6,42 +6,36 @@
 @using privatext.Common.Response
 @using privatext.Services
 
-<MudGrid Spacing="3">
-    <MudItem xs="3"></MudItem>
-    <MudItem xs="6">
-        @if (IsLoading)
+@if (IsLoading)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <MudStack Direction="Column" JustifyContent="Center">
+        @if (ShowViewTextBtn)
         {
-            <MudProgressCircular Indeterminate="true" />
+            <MudText Typo="Typo.h5">View the private text message</MudText>
+            <MudText Typo="Typo.body1">The text will be automatically removed from the server once you view it.</MudText>
+            <MudButton OnClick="@ExecuteViewText" Variant="Variant.Outlined" Color="Color.Primary">View Text</MudButton>
         }
-        else
+
+        @if (IsTextViewed)
         {
             <MudStack Direction="Column" JustifyContent="Center">
-                @if (ShowViewTextBtn)
-                {
-                    <MudText Typo="Typo.h5">View the private text message</MudText>
-                    <MudText Typo="Typo.body1">The text will be automatically removed from the server once you view it.</MudText>
-                    <MudButton OnClick="@ExecuteViewText" Variant="Variant.Outlined" Color="Color.Primary">View Text</MudButton>
-                }
-
-                @if (IsTextViewed)
-                {
-                    <MudStack Direction="Column" JustifyContent="Center">
-                        <MudText Typo="Typo.h5">Your text message</MudText>
-                        <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" Lines="10" ReadOnly="true" Value="@Content" FullWidth="true" />
-                        <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
-                    </MudStack>
-                }
-
-                @if (ShowDeletedNotification)
-                {
-                    <MudText Typo="Typo.body1">The message has been viewed and deleted</MudText>
-                    <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
-                }
+                <MudText Typo="Typo.h5">Your text message</MudText>
+                <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" Lines="10" ReadOnly="true" Value="@Content" FullWidth="true" />
+                <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
             </MudStack>
         }
-    </MudItem>
-    <MudItem xs="3"></MudItem>
-</MudGrid>
+
+        @if (ShowDeletedNotification)
+        {
+            <MudText Typo="Typo.body1">The message has been viewed and deleted</MudText>
+            <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
+        }
+    </MudStack>
+}
 
 
 @code {

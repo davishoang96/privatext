@@ -13,7 +13,13 @@
     <MudMainContent Class="mt-16 pa-4">
         <MudContainer MaxWidth="MaxWidth.Medium">
             <div style="display: flex; justify-content: center; align-items: center; height: 75vh;">
-                @Body
+                <MudGrid Spacing="3">
+                    <MudItem lg="3" md="3"></MudItem>
+                        <MudItem xs="12" md="6" lg="6">
+                            @Body
+                        </MudItem>
+                    <MudItem lg="3" md="3"></MudItem>
+                </MudGrid>
             </div>
         </MudContainer>
     </MudMainContent>
