@@ -1,19 +1,23 @@
 ﻿@inherits LayoutComponentBase
-<RadzenComponents />
+<MudThemeProvider IsDarkMode="true" Theme="_theme" DefaultScrollbar="true" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<RadzenLayout style="position: relative">
-    <RadzenHeader class="header">
-        Privatext
-    </RadzenHeader>
-    <RadzenBody>
-        <div class="rz-p-4">
-            @Body
-        </div>
-    </RadzenBody>
-    <RadzenFooter>
-        © 2025 Privatext.com
-    </RadzenFooter>
-</RadzenLayout>
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudText Typo="Typo.h5" Class="ml-3">Privatext</MudText>
+        <MudSpacer />
+        <MudLink Href="https://vhdevblog.com/posts">Blog</MudLink>
+    </MudAppBar>
+    <MudMainContent Class="mt-16 pa-4">
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <div style="display: flex; justify-content: center; align-items: center; height: 75vh;">
+                @Body
+            </div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
 <style>
     .header{
@@ -23,3 +27,14 @@
         font-size: 24px;
     }
 </style>
+
+@code{
+    private MudTheme _theme = new()
+    {
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1,
+            Background = "#0d1117",
+        },
+    };
+}

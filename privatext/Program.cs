@@ -3,6 +3,7 @@ using FastEndpoints.ClientGen;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using NJsonSchema.CodeGeneration.CSharp;
 using privatext.Components;
 using privatext.Database;
@@ -26,7 +27,7 @@ builder.Services.AddSingleton<IRandomString, RandomString>();
 builder.Services.AddSingleton<ICryptoService, CryptoService>();
 
 // Add services to the container.
-builder.Services.AddRadzenComponents();
+builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
