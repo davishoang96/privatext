@@ -6,15 +6,22 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudText Typo="Typo.h5" Class="ml-3">Privatext</MudText>
+        <MudText Typo="Typo.h5" Class="header">Privatext</MudText>
         <MudSpacer />
-        <MudLink Href="https://vhdevblog.com/posts">Blog</MudLink>
+        <MudStack Row="true">
+            <MudLink Href="/about">About</MudLink>
+            <MudLink Href="https://vhdevblog.com/posts">Blog</MudLink>
+        </MudStack>
     </MudAppBar>
     <MudMainContent Class="mt-16 pa-4">
         <MudContainer MaxWidth="MaxWidth.Medium">
-            <div style="display: flex; justify-content: center; align-items: center; height: 75vh;">
-                @Body
-            </div>
+            <MudGrid Spacing="3">
+                <MudItem lg="3" md="3"></MudItem>
+                <MudItem xs="12" md="6" lg="6">
+                    @Body
+                </MudItem>
+                <MudItem lg="3" md="3"></MudItem>
+            </MudGrid>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
@@ -25,6 +32,7 @@
         padding: 10px;
         text-align: left;
         font-size: 24px;
+        font-family: Consolas
     }
 </style>
 

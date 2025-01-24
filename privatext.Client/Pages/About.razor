@@ -1,0 +1,29 @@
+﻿@page "/about"
+
+<h5 style="font-family: Consolas">What is privatext?</h5>
+
+<MudText Typo="Typo.body1" Align="Align.Justify">
+
+    Hi, I'm Davis, I'm the creator of Privatext. I'm a software developer and 
+    I created Privatext as a fun project to learn more about cryptography and web development.'
+    <br />
+    <br />
+
+    Privatext is a free web application that allows you to send private text messages that are automatically deleted after being read. 
+    <br />
+    <br />
+    The messages are encrypted and decrypted in the browser, so the server never sees the unencrypted message. 
+    The server only stores the encrypted message and a partial decryption key.
+    <br />
+    <br />
+    The other partial of the decryption key is sent to the recipient in the URL, so the recipient can decrypt the message in their browser.
+    <br />
+    <br />
+    Once the message is read, it is automatically deleted from the server. 
+    The server never stores an unencrypted message or a full decryption key, so there is no way to recover the message once it has been read.
+
+</MudText>
+
+@code {
+
+}

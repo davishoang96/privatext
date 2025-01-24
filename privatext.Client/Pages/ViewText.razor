@@ -3,25 +3,26 @@
 @inject NavigationManager navigationService
 @inject ICryptoService CryptService
 @using Newtonsoft.Json
+@using privatext.Client.Layout
 @using privatext.Common.Response
 @using privatext.Services
 
-<MudGrid Spacing="3">
-    <MudItem xs="3"></MudItem>
-    <MudItem xs="6">
-        @if (IsLoading)
+<MudSpacer />
+<MudSpacer />
+
+@if (IsLoading)
+{
+    <MudProgressCircular Indeterminate="true" />
+}
+else
+{
+    <MudStack Direction="Column" JustifyContent="Center">
+        @if (ShowViewTextBtn)
         {
-            <MudProgressCircular Indeterminate="true" />
+            <MudText Typo="Typo.h5">View the private text message</MudText>
+            <MudText Typo="Typo.body1">The text will be automatically removed from the server once you view it.</MudText>
+            <MudButton OnClick="@ExecuteViewText" Variant="Variant.Outlined" Color="Color.Primary">View Text</MudButton>
         }
-        else
-        {
-            <MudStack Direction="Column" JustifyContent="Center">
-                @if (ShowViewTextBtn)
-                {
-                    <MudText Typo="Typo.h5">View the private text message</MudText>
-                    <MudText Typo="Typo.body1">The text will be automatically removed from the server once you view it.</MudText>
-                    <MudButton OnClick="@ExecuteViewText" Variant="Variant.Outlined" Color="Color.Primary">View Text</MudButton>
-                }
 
                 @if (IsTextViewed)
                 {
@@ -32,18 +33,13 @@
                     </MudStack>
                 }
 
-                @if (ShowDeletedNotification)
-                {
-                    <MudText Typo="Typo.body1">The message has been viewed and deleted</MudText>
-                    <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
-                }
-            </MudStack>
+        @if (ShowDeletedNotification)
+        {
+            <MudText Typo="Typo.body1">The message has been viewed and deleted</MudText>
+            <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
         }
-    </MudItem>
-    <MudItem xs="3"></MudItem>
-</MudGrid>
-
-
+    </MudStack>
+}
 @code {
 
     [Parameter]
