@@ -24,14 +24,14 @@ else
             <MudButton OnClick="@ExecuteViewText" Variant="Variant.Outlined" Color="Color.Primary">View Text</MudButton>
         }
 
-                @if (IsTextViewed)
-                {
-                    <MudStack Direction="Column" JustifyContent="Center">
-                        <MudText Typo="Typo.h5">Your text message</MudText>
-                        <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" Lines="10" ReadOnly="true" Value="@Content" FullWidth="true" />
-                        <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
-                    </MudStack>
-                }
+        @if (IsTextViewed)
+        {
+            <MudStack Direction="Column" JustifyContent="Center">
+                <MudText Typo="Typo.h5">Your text message</MudText>
+                <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" Lines="10" ReadOnly="true" Value="@Content" FullWidth="true" />
+                <MudButton OnClick="@GoHome" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
+            </MudStack>
+        }
 
         @if (ShowDeletedNotification)
         {
