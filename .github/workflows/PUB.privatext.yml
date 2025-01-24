@@ -47,7 +47,7 @@ jobs:
           password: ${{ secrets.SERVER_LOGIN_PASSWORD }}
           port: 22
           source: privatext-app.tar
-            target: /var/www/deployment/
+          target: /var/www/deployment/
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
