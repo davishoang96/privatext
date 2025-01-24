@@ -34,20 +34,17 @@ jobs:
       - name: Build Docker image
         run: docker build -t davishoang96/privatext-app:latest .
 
-      #- name: Save Docker image
-      #  run: | 
-      #    docker save -o privatext-app.tar privatext-app:latest
-      #    chmod 664 privatext-app.tar
-
       - name: Push Docker image to Docker Hub
         run: docker push davishoang96/privatext-app:latest
-  
-      #- name: copy file via ssh password
-      #  uses: appleboy/scp-action@v0.1.7
-      #  with:
-      #    host: ${{ secrets.SERVER_ADDRESS }}
-       #   username: ${{ secrets.SERVER_LOGIN_USERNAME }}
-        #  password: ${{ secrets.SERVER_LOGIN_PASSWORD }}
-         # port: 22
-         #source: privatext-app.tar
-          #target: /var/www/deployment/
+
+      - name: Pull images
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_ADDRESS }}
+          username: ${{ secrets.SERVER_LOGIN_USERNAME }}
+          password: ${{ secrets.SERVER_LOGIN_PASSWORD }}
+          port: 22
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+            docker pull davishoang96/privatext-app:latest
+     
