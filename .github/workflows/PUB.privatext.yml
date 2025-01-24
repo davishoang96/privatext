@@ -57,5 +57,5 @@ jobs:
           password: ${{ secrets.SERVER_LOGIN_PASSWORD }}
           port: 22
           script: |
-            docker load < privatext-app.tar
+            docker load < /var/www/deployment/privatext-app.tar
             docker run -d -p 8080:5000 privatext-app
