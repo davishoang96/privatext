@@ -35,9 +35,9 @@ jobs:
         run: docker build -t davishoang96/privatext-app:latest .
 
       - name: Save Docker image
-       run: | 
-         docker save -o privatext-app.tar privatext-app:latest
-         chmod 664 privatext-app.tar
+        run: | 
+          docker save -o privatext-app.tar privatext-app:latest
+          chmod 664 privatext-app.tar
   
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.7
