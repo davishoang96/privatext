@@ -3,51 +3,50 @@
 @inject IRandomString RandomString
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+@using privatext.Client.Layout
 @using privatext.Common.DTO
 @using privatext.Common.Request
 @using privatext.Services
 @inject ICryptoService CryptService;
 
-<PageTitle>Privatext</PageTitle>
+<PageTitle>privatext</PageTitle>
+<MudSpacer />
+<MudSpacer />
 
-<MudStack Direction="Column" JustifyContent="Center">
-    @if (@ShowTextInput)
-    {
-        <MudStack Direction="Column" JustifyContent="Center">
-            <MudText Typo="Typo.h4" Class="custom-font">New message</MudText>
-            <MudText>The message will be deleted as soon as it is read.</MudText>
-            <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" 
-                            @bind-Value="@Content" Lines="10" 
-                            Placeholder="Enter your text message here..." 
-                            MaxLength="4000" FullWidth="true" />
-            <MudButton OnClick="@CreateMessage" 
-                        Variant="Variant.Outlined" 
-                        Color="Color.Success">Create</MudButton>
-        </MudStack>
-    }
-    else
-    {
-        <MudStack Direction="Column" JustifyContent="Center">
-
+@if (@ShowTextInput)
+{
+    <MudStack>
+        <h4 style="font-family: Consolas">New message</h4>
+        <MudText>The message will be deleted as soon as it is read.</MudText>
+        <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined"
+                      @bind-Value="@Content" Lines="10"
+                      Placeholder="Enter your text message here..."
+                      MaxLength="4000" FullWidth="true" />
+        <MudButton OnClick="@CreateMessage"
+                   Variant="Variant.Outlined"
+                   Color="Color.Success">Create</MudButton>
+    </MudStack>
+}
+else
+{
+    <MudStack>
         @if (@IsLoading)
         {
             <MudProgressCircular Indeterminate="true" />
         }
         else
         {
-            <MudText Typo="Typo.h6">Link</MudText>
+            <h6 style="font-family: Consolas">Link: </h6>
             <MudTextField Style="font-family: Consolas" Variant="Variant.Outlined" @bind-Value="@TextUrl" />
-            <MudIconButton Icon="Icons.Material.Filled.Check" Color="Color.Secondary" />
             <MudText Typo="Typo.h6">Your message</MudText>
-            <MudTextField Lines="10" Style="font-family: Consolas" Variant="Variant.Outlined" 
-                            ReadOnly="true" @bind-Value="@Content" FullWidth="true" />
+            <MudTextField Lines="10" Style="font-family: Consolas" Variant="Variant.Outlined"
+                          ReadOnly="true" @bind-Value="@Content" FullWidth="true" />
             <MudText Typo="Typo.caption">(you will only see this once)</MudText>
             <MudButton OnClick="@DeleteMessage" Variant="Variant.Outlined" Color="Color.Error">Delete</MudButton>
             <MudButton OnClick="@NewText" Variant="Variant.Outlined" Color="Color.Success">Create</MudButton>
         }
     </MudStack>
-    }
-</MudStack>
+}
 
 <style>
     .custom-font {
@@ -70,6 +69,11 @@
         IsLoading = false;
     }
 
+    private void CopyToClipboard()
+    {
+        Snackbar.Add("Copied to clipboard", Severity.Success);
+    }
+
     private async Task DeleteMessage()
     {
         if (string.IsNullOrEmpty(Id))
@@ -85,9 +89,10 @@
 
         if (res)
         {
-            NewText();
             Snackbar.Add("Sucessfully deleted", Severity.Success);
         }
+
+        NewText();
     }
 
 

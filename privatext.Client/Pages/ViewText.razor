@@ -3,8 +3,12 @@
 @inject NavigationManager navigationService
 @inject ICryptoService CryptService
 @using Newtonsoft.Json
+@using privatext.Client.Layout
 @using privatext.Common.Response
 @using privatext.Services
+
+<MudSpacer />
+<MudSpacer />
 
 @if (IsLoading)
 {
@@ -36,8 +40,6 @@ else
         }
     </MudStack>
 }
-
-
 @code {
 
     [Parameter]
