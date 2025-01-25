@@ -23,6 +23,15 @@
                       @bind-Value="@Content" Lines="10"
                       Placeholder="Enter your text message here..."
                       MaxLength="4000" FullWidth="true" />
+        
+        @* https://github.com/MudBlazor/MudBlazor/discussions/8311 *@
+        <MudSelect @bind-Value="ExpiredIn" Label="Expired in minutes" Dense="true">
+            @for (int i = 5; i <= 60; i += 5)
+            {
+                var displayValue = i;
+                <MudSelectItem Value="@i">Expired in @displayValue minutes</MudSelectItem>
+            }
+        </MudSelect>
         <MudButton OnClick="@CreateMessage"
                    Variant="Variant.Outlined"
                    Color="Color.Success">Create</MudButton>
@@ -68,6 +77,8 @@ else
     private bool ShowTextInput { get; set; }
     private string Id { get; set; }
     private bool IsLoading { get; set; }
+    private bool ShowTimeSetting { get; set; }
+    private int ExpiredIn { get; set; } = 30;
 
     protected override void OnInitialized()
     {
@@ -122,6 +133,7 @@ else
         var keyIdentifier = key.Substring(9);
         var result = await ApiClient.CreateMessageEndpointAsync(new CreateMessageRequest
         {
+            DeletionTime = ExpiredIn,
             MessageDTO = new MessageDTO
             {
                 KeyIdentifer = keyIdentifier,
