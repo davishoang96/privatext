@@ -39,7 +39,6 @@ public class CreateMessageEndpoint : Endpoint<CreateMessageRequest, bool>
             {
                 // Schedule the Quartz job to delete the message after 5 minutes
                 var scheduler = await schedulerFactory.GetScheduler();
-
                 var job = JobBuilder.Create<DeleteMessageJob>()
                                     .WithIdentity($"DeleteMessage-{r.MessageDTO.MessageId}", "MessageJobs")
                                     .UsingJobData("MessageId", r.MessageDTO.MessageId) // Pass the MessageId to the job
